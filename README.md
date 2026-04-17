@@ -2,4 +2,5 @@
 
 # GymMaxxing
 
+# Mockups
 ![mockups_websites](homepage_php.drawio.png)
