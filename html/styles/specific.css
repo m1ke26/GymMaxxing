@@ -1,0 +1,105 @@
+#FirstBanner img {
+    width: 100%;
+}
+
+/*--------------MAIN PAGE, AREA DAS AULAS E SERVIÇOS--------------------*/
+#services {
+    margin: 100px 0;
+}
+
+#services li {
+    position: relative;
+    display: inline-block;
+    margin: 25px 0;
+    font-size: 35px;
+}
+
+#services li img {
+    display: block;
+    width: 300px;
+}
+
+#services li span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#services h1 {
+    margin-bottom: 30px;
+}
+
+#services ul {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: center;
+}
+
+/*-----------------------------------------------------------*/
+
+#SecondBanner img {
+    width: 100%;
+}
+
+/*--------------MAIN PAGE, AREA DAS SUBSCRIÇÕES--------------------*/
+
+#subscriptions {
+    margin: 60px 0;
+}
+
+#subscriptions li {
+    position: relative;
+    display: inline-block;
+    font-size: 35px;
+
+}
+
+#subscriptions li p {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 17px;
+    text-align: center;
+}
+
+#subscriptions li img {
+    display: block;
+    width: 300px;
+}
+
+#subscriptions li span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#subscriptions h1 {
+    margin-bottom: 50px;
+}
+
+#subscriptions ul {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: center;
+}
+
+.button-join {
+    display: block;
+    width: fit-content;
+    margin: 30px auto;
+    padding: 15px 40px;
+    color: white;
+    background-color: #333;
+    font-size: 25px;
+}
+
+.button-join:hover {
+    background-color: #ffffff;
+    color: black;
+    transition: background-color 0.3s;
+}
