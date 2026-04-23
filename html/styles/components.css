@@ -1,3 +1,10 @@
+/*----------ESCONDER SOCIAL EMDIA ICONS PARA NAO SOBREPOR HEADER-----------*/
+@media (max-width: 900px) {
+    .social-links {
+        display: none;
+    }
+}
+
 /*-------------HEADER INVERSÃO DE COR------------*/
 header {
     padding: 20px;

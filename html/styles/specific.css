@@ -2,28 +2,74 @@
     width: 100%;
 }
 
+body {
+    overflow-x: hidden;
+}
+
 /*--------------MAIN PAGE, AREA DAS AULAS E SERVIÇOS--------------------*/
 #services {
     margin: 100px 0;
 }
 
 #services li {
-    position: relative;
-    display: inline-block;
     margin: 25px 0;
     font-size: 35px;
+    transition: transform 0.3s;
+}
+
+#services li a {
+    position: relative;
+    display: block;
 }
 
 #services li img {
+    margin: 0 40px;
     display: block;
     width: 300px;
 }
 
 #services li span {
     position: absolute;
-    top: 50%;
-    left: 50%;
     transform: translate(-50%, -50%);
+    width: 100%;
+}
+
+.line1 li:nth-child(1) span {
+    top: 51%;
+    left: 73%;
+}
+
+.line1 li:nth-child(2) span {
+    top: 52%;
+    left: 75%;
+}
+
+.line1 li:nth-child(3) span {
+    top: 50%;
+    left: 85%;
+}
+
+.line2 {
+    align-items: flex-start;
+}
+
+.line2 li:nth-child(1) span {
+    top: 52%;
+    left: 86%;
+}
+
+.line2 li:nth-child(2) span {
+    top: 50%;
+    left: 86%;
+}
+
+.line2 li:nth-child(3) span {
+    top: 62%;
+    left: 91%;
+}
+
+.line2 li:nth-child(3) img {
+    margin-bottom: -50px;
 }
 
 #services h1 {
@@ -35,6 +81,11 @@
     align-items: center;
     gap: 20px;
     justify-content: center;
+}
+
+#services li:hover {
+    transform: scale(1.05);
+    cursor: pointer;
 }
 
 /*-----------------------------------------------------------*/
@@ -52,7 +103,7 @@
 #subscriptions li {
     position: relative;
     display: inline-block;
-    font-size: 35px;
+    font-size: 45px;
 
 }
 
@@ -61,7 +112,7 @@
     top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 17px;
+    font-size: 20px;
     text-align: center;
 }
 
@@ -96,10 +147,10 @@
     color: white;
     background-color: #333;
     font-size: 25px;
+    transition: background-color 0.3s;
 }
 
 .button-join:hover {
     background-color: #ffffff;
     color: black;
-    transition: background-color 0.3s;
 }
