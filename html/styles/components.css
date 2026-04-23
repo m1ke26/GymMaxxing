@@ -107,6 +107,10 @@ footer:hover a {
     color: white;
 }
 
+footer:hover p {
+    color: white;
+}
+
 footer:hover img {
     filter: invert(1);
 }
