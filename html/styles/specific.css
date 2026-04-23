@@ -1,9 +1,43 @@
-#FirstBanner img {
-    width: 100%;
+@media (max-width: 1050px) {
+    #services li img {
+        width: 240px !important;
+    }
+
+    #services li {
+        font-size: 25px !important;
+    }
+}
+
+
+
+@media (max-width: 900px) {
+    #subscriptions li span {
+        font-size: 27px;
+    }
+
+    #subscriptions li p {
+        font-size: 15px !important;
+    }
+
+    #services li img {
+        width: 150px !important;
+    }
+
+    #services li {
+        font-size: 20px !important;
+    }
+
+
 }
 
 body {
     overflow-x: hidden;
+}
+
+/*--------------MAIN PAGE, 1ª IMAGEM GRANDE--------------------*/
+
+#FirstBanner img {
+    width: 100%;
 }
 
 /*--------------MAIN PAGE, AREA DAS AULAS E SERVIÇOS--------------------*/
@@ -23,7 +57,7 @@ body {
 }
 
 #services li img {
-    margin: 0 40px;
+    margin: 0 30px;
     display: block;
     width: 300px;
 }
@@ -41,7 +75,7 @@ body {
 
 .line1 li:nth-child(2) span {
     top: 52%;
-    left: 75%;
+    left: 77%;
 }
 
 .line1 li:nth-child(3) span {
@@ -88,7 +122,7 @@ body {
     cursor: pointer;
 }
 
-/*-----------------------------------------------------------*/
+/*--------------MAIN PAGE, 2ª IMAGEM GRANDE--------------------*/
 
 #SecondBanner img {
     width: 100%;
@@ -154,3 +188,5 @@ body {
     background-color: #ffffff;
     color: black;
 }
+
+/*------------------------------------------------*/
