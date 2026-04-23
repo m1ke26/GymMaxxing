@@ -27,6 +27,15 @@
         font-size: 20px !important;
     }
 
+    #svc-grid {
+        grid-template-columns: 1fr;
+        padding: 0 20px;
+    }
+
+    #svc-hero h1 {
+        font-size: 45px;
+    }
+
 
 }
 
@@ -189,4 +198,75 @@ body {
     color: black;
 }
 
-/*------------------------------------------------*/
+/*------------------SERVICE-----------------------*/
+
+#svc-hero {
+    text-align: center;
+    padding: 80px 20px 60px;
+    border-bottom: 2px solid #000;
+}
+
+#svc-hero h1 {
+    font-size: 70px;
+    margin-bottom: 15px;
+}
+
+#svc-hero p {
+    font-size: 22px;
+    letter-spacing: 2px;
+}
+
+#svc-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 40px;
+    border: 1px solid #000;
+}
+
+.svc-card {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 50px 40px;
+    border: 1px solid #000;
+    transition: background-color 0.3s;
+}
+
+.svc-card:hover {
+    background-color: #f0f0f0;
+}
+
+.svc-card-label {
+    font-size: 32px;
+    letter-spacing: 3px;
+    border-bottom: 2px solid #000;
+    padding-bottom: 15px;
+}
+
+.svc-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.svc-card-body p {
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+.svc-btn {
+    display: inline-block;
+    width: fit-content;
+    padding: 10px 25px;
+    border: 2px solid #000;
+    font-size: 16px;
+    letter-spacing: 1px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.svc-btn:hover {
+    background-color: #333;
+    color: white;
+}
