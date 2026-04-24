@@ -6,12 +6,12 @@
 }
 
 /*-------------HEADER INVERSÃO DE COR------------*/
-header {
+body>header {
     padding: 20px;
     transition: background-color 0.6s;
 }
 
-header:hover {
+body>header:hover {
     background-color: #333;
 }
 
@@ -19,7 +19,11 @@ header:hover a {
     color: white;
 }
 
-header:hover img {
+header:hover .nav-links img {
+    filter: invert(1);
+}
+
+header:hover .social-links img {
     filter: invert(1);
 }
 
@@ -40,7 +44,7 @@ nav {
     justify-content: center;
     align-items: center;
     position: relative;
-    margin-left: -50px;
+    margin-left: -20px;
     margin-bottom: -40px;
     margin-top: -30px;
 }
@@ -51,7 +55,7 @@ nav {
 
 .social-links {
     position: absolute;
-    right: 50px;
+    right: 5px;
 }
 
 .social-links img {
@@ -111,6 +115,6 @@ footer:hover p {
     color: white;
 }
 
-footer:hover img {
+footer:hover .social-links2 img {
     filter: invert(1);
 }

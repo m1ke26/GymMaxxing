@@ -36,7 +36,6 @@
         font-size: 45px;
     }
 
-
 }
 
 body {
@@ -92,6 +91,7 @@ body {
     left: 85%;
 }
 
+
 .line2 {
     align-items: flex-start;
 }
@@ -113,6 +113,7 @@ body {
 
 .line2 li:nth-child(3) img {
     margin-bottom: -50px;
+    margin-top: -20px !important;
 }
 
 #services h1 {
@@ -275,54 +276,51 @@ body {
 /*---------------------------------- Classes----------------------------*/
 .choice-section {
     text-align: center;
-    margin: 50px 0;   
+    margin: 50px 0;
 }
 
 .main-title {
-    font-size: 80px;  
+    font-size: 80px;
     margin-bottom: 10px;
 }
 
 .subtitle {
-    font-size: 25px;  
-    color: #555;      
-    display: block;    
+    font-size: 25px;
+    color: #555;
+    display: block;
 }
 
 #pricing-plans {
     display: flex !important;
     flex-direction: row !important;
-    justify-content: center;       
-    align-items: flex-start;       
-    gap: 30px;                     
-    width: 100%;                   
+    justify-content: center;
+    align-items: flex-start;
+    gap: 30px;
+    width: 100%;
     padding: 40px 20px;
     box-sizing: border-box;
 }
 
 #pricing-plans .plan-card {
-    flex: 0 1 350px;       
-    min-width: 300px;      
+    flex: 0 1 350px;
+    min-width: 300px;
     background: #f4f4f4;
     border-radius: 20px;
     padding: 30px;
     display: flex;
     flex-direction: column;
-    align-items: center;   
+    align-items: center;
 }
 
 
 #pricing-plans .plan-card.featured .ribbon {
     display: block;
-    
     color: black;
-    font-size: 20px;          
-    font-weight: bold;         
+    font-size: 20px;
+    font-weight: bold;
     text-transform: uppercase;
-    letter-spacing: 2px;     
-    padding: 10px 0;
-    margin-bottom: 15px;      
-    border-radius: 5px;       
+    letter-spacing: 2px;
+    border-radius: 5px;
 }
 
 #pricing-plans li {
@@ -333,11 +331,11 @@ body {
     margin: 10px 0;
 }
 
-#pricing-plans p, #pricing-plans span {
+#pricing-plans p,
+#pricing-plans span {
     position: static !important;
     transform: none !important;
 }
-
 
 .btn-yellow {
     background-color: #ffcc00;
@@ -347,4 +345,19 @@ body {
     font-weight: bold;
     cursor: pointer;
     margin: 20px 0;
+}
+
+.tier-img-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.tier-img-wrapper h2 {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 100%;
+    font-size: 18px;
 }
