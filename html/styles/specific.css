@@ -312,6 +312,10 @@ body {
     align-items: center;
 }
 
+#pricing-plans .ribbon {
+    margin-top: -15px;
+}
+
 
 #pricing-plans .plan-card.featured .ribbon {
     display: block;
@@ -337,16 +341,6 @@ body {
     transform: none !important;
 }
 
-.btn-yellow {
-    background-color: #ffcc00;
-    border: none;
-    border-radius: 50px;
-    padding: 15px 40px;
-    font-weight: bold;
-    cursor: pointer;
-    margin: 20px 0;
-}
-
 .tier-img-wrapper {
     position: relative;
     display: inline-block;
@@ -354,10 +348,19 @@ body {
 
 .tier-img-wrapper h2 {
     position: absolute;
-    top: 55%;
+    top: 58%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
     width: 100%;
     font-size: 18px;
+}
+
+.plan-card {
+    text-align: center;
+}
+
+.plan-subtitle,
+.schedule-highlight {
+    text-align: center;
 }
