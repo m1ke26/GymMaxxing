@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Login — Gymmaxxing</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/base.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/specific.css">
+    <link rel="icon" href="gym_logo.png" type="image/png">
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#">CLASSES</a></li>
+                <li><a href="services.html">SERVICES</a></li>
+                <li><a href="homepage.html"><img src="gym_logo.png" width="150" alt="Gym Logo"></a></li>
+                <li><a href="joinus.html">JOIN US</a></li>
+                <li><a href="login.html">LOGIN</a></li>
+            </ul>
+            <ul class="social-links">
+                <li><a href="#"><img src="facebook.png"  width="20" alt="Facebook"></a></li>
+                <li><a href="#"><img src="instagram.png" width="20" alt="Instagram"></a></li>
+                <li><a href="#"><img src="linkedin.png"  width="20" alt="LinkedIn"></a></li>
+                <li><a href="#"><img src="youtube.png"   width="20" alt="YouTube"></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="login-page-wrapper">
+
+            <!-- LOGIN -->
+            <section class="auth-section">
+                <h2>Login</h2>
+                <form class="auth-form" action="login.php" method="POST">
+                    <input type="hidden" name="action" value="login">
+                    <input type="email"    name="email"    placeholder="Email *"    autocomplete="email" required>
+                    <input type="password" name="password" placeholder="Password *" autocomplete="current-password" required>
+                    <button type="submit">Login</button>
+                </form>
+                <p class="field-legend"><span>*</span> mandatory field</p>
+            </section>
+
+            <div class="auth-separator" aria-hidden="true"></div>
+            <div class="auth-divider"   aria-hidden="true"></div>
+
+            <!-- REGISTER -->
+            <section class="auth-section">
+                <h2>Register</h2>
+                <form class="auth-form" action="login.php" method="POST">
+                    <input type="hidden" name="action" value="register">
+                    <input type="text"     name="name"     placeholder="Username *"     autocomplete="name" required>
+                    <input type="email"    name="email"    placeholder="Email *"        autocomplete="email" required>
+                    <input type="password" name="password" placeholder="Password *"     autocomplete="new-password" required>
+                    <input type="tel"      name="phone"    placeholder="Phone Number"   autocomplete="tel">
+                    <button type="submit">Register</button>
+                </form>
+                <p class="field-legend"><span>*</span> mandatory field</p>
+            </section>
+
+        </div>
+    </main>
+
+    <footer>
+        <ul class="social-links2">
+            <li><a href="#"><img src="facebook.png" width="20" alt="facebook"></a></li>
+            <li><a href="#"><img src="instagram.png" width="20" alt="instagram"></a></li>
+            <li><a href="#"><img src="linkedin.png" width="20" alt="linkedin"></a></li>
+            <li><a href="#"><img src="youtube.png" width="20" alt="youtube"></a></li>
+        </ul>
+        <ul class="nav-links2">
+            <li><a href="#">CLASSES</a></li>
+            <li><a href="services.html">SERVICES</a></li>
+            <li><a href="joinus.html">JOIN US</a></li>
+            <li><a href="#">CONTACT US</a></li>
+            <li><a href="login.html">LOGIN</a></li>
+        </ul>
+        <p>
+            © 2026 Gymmaxxing
+        </p>
+    </footer>
+
+</body>
+</html>

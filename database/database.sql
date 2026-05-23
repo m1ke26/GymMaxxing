@@ -70,10 +70,10 @@ INSERT INTO MemberProfile (userId, tier) VALUES
     (6, 'zeus');
 
 INSERT INTO Class (title, image, schedule, capacity, trainerId) VALUES
-    ('Outdoor Training', 'homepage_outdoor.png', 'Segunda 08:00', 15, 2),
-    ('Indoor Fitness', 'homepage_indoor.png', 'Terça 10:00', 20, 2),
-    ('Wellness & Yoga', 'homepage_wellness.png', 'Quarta 09:00', 12, 3),
-    ('Nutrition Workshop', 'homepage_nutrition.png', 'Quinta 18:00', 10, 3);
+    ('Outdoor Training', 'homepage_outdoor.png', 'Monday 08:00', 15, 2),
+    ('Indoor Fitness', 'homepage_indoor.png', 'Tuesday 10:00', 20, 2),
+    ('Wellness & Yoga', 'homepage_wellness.png', 'Wednesday 09:00', 12, 3),
+    ('Nutrition Workshop', 'homepage_nutrition.png', 'Thursday 18:00', 10, 3);
 
 INSERT INTO Enrollment (userId, classId) VALUES
     (4, 1),
