@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 class MemberProfile {
     public int $id;
     public int $userId;

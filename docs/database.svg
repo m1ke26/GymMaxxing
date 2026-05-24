@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" font-family="Arial, sans-serif">
+  <rect width="1200" height="680" fill="#fff"/>
+  <style>
+    .tbl { fill: #fff; stroke: #333; stroke-width: 1.5; }
+    .hdr { fill: #2d2d2d; }
+    .ht { fill: #fff; font-weight: bold; font-size: 14px; }
+    .f { fill: #333; font-size: 12px; }
+    .fk-line { stroke: #555; stroke-width: 1.5; fill: none; }
+    .dot { fill: #555; }
+  </style>
+
+  <!-- User -->
+  <g transform="translate(420, 20)">
+    <rect width="200" height="230" rx="3" class="tbl"/>
+    <rect width="200" height="30" rx="3" class="hdr"/>
+    <text x="100" y="20" text-anchor="middle" class="ht">User</text>
+    <text x="10" y="50" class="f">id: INTEGER (PK)</text>
+    <text x="10" y="70" class="f">name: TEXT</text>
+    <text x="10" y="90" class="f">username: TEXT (UNIQUE)</text>
+    <text x="10" y="110" class="f">email: TEXT (UNIQUE)</text>
+    <text x="10" y="130" class="f">password: TEXT</text>
+    <text x="10" y="150" class="f">phone: TEXT</text>
+    <text x="10" y="170" class="f">photo: TEXT</text>
+    <text x="10" y="190" class="f">role: TEXT</text>
+    <text x="10" y="210" class="f">active: INTEGER</text>
+  </g>
+
+  <!-- MemberProfile -->
+  <g transform="translate(40, 380)">
+    <rect width="200" height="110" rx="3" class="tbl"/>
+    <rect width="200" height="30" rx="3" class="hdr"/>
+    <text x="100" y="20" text-anchor="middle" class="ht">MemberProfile</text>
+    <text x="10" y="50" class="f">id: INTEGER (PK)</text>
+    <text x="10" y="70" class="f">userId: INTEGER (FK)</text>
+    <text x="10" y="90" class="f">tier: TEXT</text>
+  </g>
+
+  <!-- TrainerProfile -->
+  <g transform="translate(300, 380)">
+    <rect width="200" height="150" rx="3" class="tbl"/>
+    <rect width="200" height="30" rx="3" class="hdr"/>
+    <text x="100" y="20" text-anchor="middle" class="ht">TrainerProfile</text>
+    <text x="10" y="50" class="f">id: INTEGER (PK)</text>
+    <text x="10" y="70" class="f">userId: INTEGER (FK)</text>
+    <text x="10" y="90" class="f">bio: TEXT</text>
+    <text x="10" y="110" class="f">specialization: TEXT</text>
+    <text x="10" y="130" class="f">certifications: TEXT</text>
+  </g>
+
+  <!-- Class -->
+  <g transform="translate(700, 20)">
+    <rect width="200" height="210" rx="3" class="tbl"/>
+    <rect width="200" height="30" rx="3" class="hdr"/>
+    <text x="100" y="20" text-anchor="middle" class="ht">Class</text>
+    <text x="10" y="50" class="f">id: INTEGER (PK)</text>
+    <text x="10" y="70" class="f">title: TEXT</text>
+    <text x="10" y="90" class="f">type: TEXT</text>
+    <text x="10" y="110" class="f">description: TEXT</text>
+    <text x="10" y="130" class="f">image: TEXT</text>
+    <text x="10" y="150" class="f">schedule: TEXT</text>
+    <text x="10" y="170" class="f">capacity: INTEGER</text>
+    <text x="10" y="190" class="f">trainerId: INTEGER (FK)</text>
+  </g>
+
+  <!-- Enrollment -->
+  <g transform="translate(560, 380)">
+    <rect width="200" height="110" rx="3" class="tbl"/>
+    <rect width="200" height="30" rx="3" class="hdr"/>
+    <text x="100" y="20" text-anchor="middle" class="ht">Enrollment</text>
+    <text x="10" y="50" class="f">id: INTEGER (PK)</text>
+    <text x="10" y="70" class="f">userId: INTEGER (FK)</text>
+    <text x="10" y="90" class="f">classId: INTEGER (FK)</text>
+  </g>
+
+  <!-- Equipment -->
+  <g transform="translate(960, 20)">
+    <rect width="200" height="150" rx="3" class="tbl"/>
+    <rect width="200" height="30" rx="3" class="hdr"/>
+    <text x="100" y="20" text-anchor="middle" class="ht">Equipment</text>
+    <text x="10" y="50" class="f">id: INTEGER (PK)</text>
+    <text x="10" y="70" class="f">name: TEXT</text>
+    <text x="10" y="90" class="f">type: TEXT</text>
+    <text x="10" y="110" class="f">status: TEXT</text>
+    <text x="10" y="130" class="f">description: TEXT</text>
+  </g>
+
+  <!-- Review -->
+  <g transform="translate(860, 380)">
+    <rect width="200" height="170" rx="3" class="tbl"/>
+    <rect width="200" height="30" rx="3" class="hdr"/>
+    <text x="100" y="20" text-anchor="middle" class="ht">Review</text>
+    <text x="10" y="50" class="f">id: INTEGER (PK)</text>
+    <text x="10" y="70" class="f">userId: INTEGER (FK)</text>
+    <text x="10" y="90" class="f">classId: INTEGER (FK)</text>
+    <text x="10" y="110" class="f">rating: INTEGER (1-5)</text>
+    <text x="10" y="130" class="f">comment: TEXT</text>
+    <text x="10" y="150" class="f">createdAt: TEXT</text>
+  </g>
+
+  <!-- === RELATIONS === -->
+
+  <!-- User -> MemberProfile -->
+  <path d="M470,250 L470,310 L140,310 L140,380" class="fk-line"/>
+  <circle cx="470" cy="250" r="3" class="dot"/>
+  <circle cx="140" cy="380" r="3" class="dot"/>
+
+  <!-- User -> TrainerProfile -->
+  <path d="M520,250 L520,330 L400,330 L400,380" class="fk-line"/>
+  <circle cx="520" cy="250" r="3" class="dot"/>
+  <circle cx="400" cy="380" r="3" class="dot"/>
+
+  <!-- User -> Enrollment -->
+  <path d="M570,250 L570,350 L620,350 L620,380" class="fk-line"/>
+  <circle cx="570" cy="250" r="3" class="dot"/>
+  <circle cx="620" cy="380" r="3" class="dot"/>
+
+  <!-- User -> Class (trainerId) -->
+  <path d="M620,135 L700,135" class="fk-line"/>
+  <circle cx="620" cy="135" r="3" class="dot"/>
+  <circle cx="700" cy="135" r="3" class="dot"/>
+
+  <!-- Class -> Enrollment -->
+  <path d="M800,230 L800,350 L720,350 L720,380" class="fk-line"/>
+  <circle cx="800" cy="230" r="3" class="dot"/>
+  <circle cx="720" cy="380" r="3" class="dot"/>
+
+  <!-- User -> Review -->
+  <path d="M620,170 L670,170 L670,310 L920,310 L920,380" class="fk-line"/>
+  <circle cx="620" cy="170" r="3" class="dot"/>
+  <circle cx="920" cy="380" r="3" class="dot"/>
+
+  <!-- Class -> Review -->
+  <path d="M900,200 L900,290 L1000,290 L1000,380" class="fk-line"/>
+  <circle cx="900" cy="200" r="3" class="dot"/>
+  <circle cx="1000" cy="380" r="3" class="dot"/>
+</svg>
