@@ -1,11 +1,10 @@
-session_start();
+<?php
+require_once __DIR__ . '/utils/session.php';
+startSession();
 
-
-if(isset($_SESSION['userId'])){
-    header('Location: pagina.php');
-    exit();
+if (isLoggedIn()) {
+    header('Location: /pages/homepage.php');
+} else {
+    header('Location: /pages/homepage.php');
 }
-
-else{
-    exit();
-}
+exit();

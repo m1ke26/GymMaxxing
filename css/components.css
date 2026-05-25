@@ -1,0 +1,240 @@
+/* ==================== HEADER ==================== */
+
+body > header {
+    padding: 20px;
+    transition: background-color 0.6s;
+}
+
+body > header:hover {
+    background-color: #333;
+}
+
+body > header:hover a {
+    color: white;
+}
+
+body > header:hover .nav-links img {
+    filter: invert(1);
+}
+
+body > header:hover .social-links img {
+    filter: invert(1);
+}
+
+/* ==================== NAVIGATION ==================== */
+
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-left: -20px;
+    margin-bottom: -40px;
+    margin-top: -30px;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: center;
+}
+
+.nav-links li {
+    font-size: 25px;
+}
+
+.nav-logo {
+    width: 150px;
+}
+
+/* ==================== SOCIAL LINKS ==================== */
+
+.social-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: center;
+}
+
+.social-links img {
+    width: 20px;
+}
+
+header .social-links {
+    position: absolute;
+    right: 5px;
+}
+
+/* ==================== FOOTER ==================== */
+
+footer {
+    padding: 20px;
+    transition: background-color 0.6s;
+}
+
+footer:hover {
+    background-color: #333;
+}
+
+footer:hover a {
+    color: white;
+}
+
+footer:hover p {
+    color: white;
+}
+
+footer:hover .social-links img {
+    filter: invert(1);
+}
+
+footer .social-links img {
+    width: 17px;
+    margin-bottom: 20px;
+}
+
+footer .nav-links {
+    width: auto;
+    margin-bottom: 20px;
+}
+
+footer .nav-links li {
+    font-size: 30px;
+}
+
+footer p {
+    text-align: center;
+    font-size: 15px;
+}
+
+/* ==================== PAGE HERO ==================== */
+
+.page-hero {
+    text-align: center;
+    padding: 80px 20px 60px;
+    border-bottom: 2px solid #000;
+}
+
+.page-hero h1 {
+    font-size: 70px;
+    margin-bottom: 15px;
+}
+
+.page-hero p {
+    font-size: 22px;
+    letter-spacing: 2px;
+}
+
+/* ==================== BUTTON COMPONENT ==================== */
+
+.button-join {
+    display: block;
+    width: fit-content;
+    margin: 30px auto;
+    padding: 15px 40px;
+    color: white;
+    background-color: #333;
+    font-size: 25px;
+    font-family: var(--font-main);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.button-join:hover {
+    background-color: #ffffff;
+    color: black;
+}
+
+/* ==================== SERVICE CARD COMPONENT ==================== */
+
+.svc-card {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 50px 40px;
+    border: 1px solid #000;
+    transition: background-color 0.3s;
+}
+
+.svc-card:hover {
+    background-color: #f0f0f0;
+}
+
+.svc-card-label {
+    font-size: 32px;
+    letter-spacing: 3px;
+    border-bottom: 2px solid #000;
+    padding-bottom: 15px;
+}
+
+.svc-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.svc-card-body p {
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+.svc-btn {
+    display: inline-block;
+    width: fit-content;
+    padding: 10px 25px;
+    border: 2px solid #000;
+    font-size: 16px;
+    letter-spacing: 1px;
+    font-family: var(--font-main);
+    text-transform: uppercase;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.svc-btn:hover {
+    background-color: #333;
+    color: white;
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 900px) {
+    header .social-links {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    nav {
+        margin: 0;
+        padding: 10px 0;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .nav-links li {
+        font-size: 16px;
+    }
+
+    .nav-logo {
+        width: 100px;
+    }
+
+    footer .nav-links li {
+        font-size: 20px;
+    }
+
+    .page-hero h1 {
+        font-size: 45px;
+    }
+
+    .page-hero p {
+        font-size: 18px;
+    }
+}
