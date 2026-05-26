@@ -31,7 +31,7 @@
 
 ## Running
 
-    php -S localhost:8000
+    php -S localhost:9000
 
 > The database is automatically created and seeded on first access.
 
