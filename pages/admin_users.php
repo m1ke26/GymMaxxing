@@ -98,7 +98,7 @@ require_once __DIR__ . '/../templates/header.php';
                             </td>
                             <td style="padding: 15px; text-align: center;">
                                 <a href="/pages/admin_edit_users.php?id=<?= $user['id'] ?>" style="text-decoration: none; color: #0066cc; font-weight: bold; margin-right: 15px; font-size: 0.9rem;">Editar</a>
-                                <a href="/actions/delete_user.php?id=<?= $user['id'] ?>" onclick="return confirm('Tem a certeza que deseja remover este utilizador?');" style="text-decoration: none; color: #cc0000; font-weight: bold; font-size: 0.9rem;">Remover</a>
+                                <a href="/pages/admin_delete_user.php?id=<?= $user['id'] ?>" onclick="return confirm('Tem a certeza que deseja remover este utilizador?');" style="text-decoration: none; color: #cc0000; font-weight: bold; font-size: 0.9rem;">Remover</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
