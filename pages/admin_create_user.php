@@ -12,13 +12,15 @@ if (function_exists('startSession')) {
     session_start();
 }
 
-// Trava de segurança: Apenas administradores
+
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header('Location: /pages/login.php');
     exit();
 }
 
 require_once __DIR__ . '/../database/connection.db.php';
+
+require_once __DIR__ . '/../database/user.class.php';
 
 $msgSucesso = null;
 $msgErro = null;
@@ -31,34 +33,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
     $role = $_POST['role'];
 
-    
     if ($nome === '' || $username === '' || $email === '' || $password === '') {
         $msgErro = "Por favor, preencha todos os campos obrigatórios (*).";
     } else {
         try {
             $db = getDatabaseConnection();
 
-            // 1. Encriptar a password usando o padrão seguro do PHP
-            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-
-            // 2. Inserir na tabela User usando as colunas padrão do vosso grupo
-            $stmt = $db->prepare('INSERT INTO User (name, username, email, phone, password, role) VALUES (?, ?, ?, ?, ?, ?)');
-            $stmt->execute([
-                $nome, 
-                $username, 
-                $email, 
-                $phone !== '' ? $phone : null, 
-                $passwordHash, 
-                $role
-            ]);
-
-            $msgSucesso = "Utilizador @{$username} criado com sucesso!";
             
-            // Limpa os campos para o formulário ficar vazio novamente
+            User::createUser(
+                $db,
+                $nome,
+                $username,
+                $email,
+                $password,
+                $phone !== '' ? $phone : null,
+                $role
+            );
+
+            $msgSucesso = "Utilizador @{$username} criado com sucesso usando o modelo oficial!";
+            
+            
             $nome = $username = $email = $phone = '';
 
         } catch (Throwable $e) {
-            // Trata erros de duplicação (ex: username ou email já existentes)
             if (strpos($e->getMessage(), 'UNIQUE constraint failed') !== false) {
                 $msgErro = "Erro: O Username ou o Email já estão a ser utilizados por outra conta.";
             } else {
@@ -130,9 +127,9 @@ require_once __DIR__ . '/../templates/header.php';
         <div style="margin-bottom: 25px;">
             <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #333;">Cargo Inicial (Role) *</label>
             <select name="role" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; background: #fff; font-size: 0.95rem;">
-                <option value="member" selected>👤 Member (Aluno)</option>
-                <option value="trainer">🏋️‍♂️ Trainer (Treinador)</option>
-                <option value="admin">🛡️ Admin (Administrador)</option>
+                <option value="member" selected> Member (Aluno)</option>
+                <option value="trainer"> Trainer (Treinador)</option>
+                <option value="admin"> Admin (Administrador)</option>
             </select>
         </div>
 

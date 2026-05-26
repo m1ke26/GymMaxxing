@@ -23,16 +23,37 @@ require_once __DIR__ . '/../database/user.class.php';
 $users = [];
 $erroMsg = null;
 
+// Captura o filtro selecionado (via método GET)
+$filtroRole = isset($_GET['role']) ? trim($_GET['role']) : '';
+
 try {
     $db = getDatabaseConnection();
     
-    $stmt = $db->query('SELECT id, name, username, email, phone, role FROM User ORDER BY role, name');
-    $users = $stmt->fetchAll();
+    
+    if (in_array($filtroRole, ['member', 'trainer', 'admin'])) {
+        $users = User::getUsersByRole($db, $filtroRole);
+    } else {
+        
+        $stmt = $db->query('SELECT * FROM User ORDER BY role, name');
+        while ($row = $stmt->fetch()) {
+            $users[] = new User(
+                (int)$row['id'],
+                $row['name'],
+                $row['username'],
+                $row['email'],
+                $row['password'],
+                $row['phone'],
+                $row['photo'],
+                $row['role'],
+                (int)$row['active']
+            );
+        }
+    }
 } catch (Throwable $e) {
     $erroMsg = "Erro ao carregar lista de utilizadores: " . $e->getMessage();
 }
 
-$pageTitle = 'Gerenciamento de Usuários';
+$pageTitle = 'Gestão de Usuários';
 require_once __DIR__ . '/../templates/header.php';
 ?>
 
@@ -42,14 +63,41 @@ require_once __DIR__ . '/../templates/header.php';
         <a href="/pages/admin.php" style="text-decoration: none; color: #666; font-weight: bold;">← Voltar ao Painel Central</a>
     </div>
 
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 15px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 15px;">
         <h1 style="margin: 0; font-size: 2rem; color: #111;">Gestão de Utilizadores</h1>
         <a href="/pages/admin_create_user.php" style="background: #000; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; font-size: 0.9rem;">+ Criar Novo Utilizador</a>
     </div>
 
-    <?php if ($erroMsg): ?>
+    <div style="background: #f8f9fa; border: 1px solid #ddd; padding: 15px 20px; border-radius: 8px; margin-bottom: 25px; display: flex; align-items: center; gap: 15px;">
+        <form method="GET" action="/pages/admin_users.php" style="display: flex; align-items: center; gap: 12px; width: 100%; flex-wrap: wrap;">
+            <label style="font-weight: bold; color: #333; font-size: 0.95rem;">Filtrar por Cargo:</label>
+            
+            <select name="role" style="padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; background: #fff; font-size: 0.9rem; min-width: 200px;">
+                <option value=""> Todos os Utilizadores</option>
+                <option value="member" <?= $filtroRole === 'member' ? 'selected' : '' ?>> Member (Alunos)</option>
+                <option value="trainer" <?= $filtroRole === 'trainer' ? 'selected' : '' ?>> Trainer (Treinadores)</option>
+                <option value="admin" <?= $filtroRole === 'admin' ? 'selected' : '' ?>> Admin (Administradores)</option>
+            </select>
+
+            <button type="submit" style="background: #000; color: #fff; border: none; padding: 8px 16px; border-radius: 4px; font-weight: bold; font-size: 0.9rem; cursor: pointer;">
+                Filtrar
+            </button>
+
+            <?php if ($filtroRole !== ''): ?>
+                <a href="/pages/admin_users.php" style="color: #666; font-size: 0.9rem; font-weight: bold; text-decoration: none; margin-left: 5px;"> Limpar Filtro</a>
+            <?php endif; ?>
+        </form>
+    </div>
+
+    <?php if (isset($_GET['sucesso'])): ?>
+        <div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
+             <?= htmlspecialchars($_GET['sucesso']) ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($erroMsg || isset($_GET['erro'])): ?>
         <div style="background: #ffcccc; color: #cc0000; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
-            <?= htmlspecialchars($erroMsg) ?>
+             <?= htmlspecialchars($erroMsg ?? $_GET['erro']) ?>
         </div>
     <?php endif; ?>
 
@@ -68,37 +116,37 @@ require_once __DIR__ . '/../templates/header.php';
             <tbody>
                 <?php if (empty($users)): ?>
                     <tr>
-                        <td colspan="6" style="padding: 30px; text-align: center; color: #888;">Nenhum utilizador encontrado no sistema.</td>
+                        <td colspan="6" style="padding: 30px; text-align: center; color: #888;">Nenhum utilizador encontrado para este filtro.</td>
                     </tr>
                 <?php else: ?>
                     <?php foreach ($users as $user): ?>
                         <tr style="border-bottom: 1px solid #eee;">
                             <td style="padding: 15px; font-weight: bold; color: #111;">
-                                <?= htmlspecialchars($user['name']) ?>
+                                <?= htmlspecialchars($user->name) ?>
                             </td>
                             <td style="padding: 15px; color: #555;">
-                                @<?= htmlspecialchars($user['username']) ?>
+                                @<?= htmlspecialchars($user->username) ?>
                             </td>
                             <td style="padding: 15px; color: #555;">
-                                <?= htmlspecialchars($user['email']) ?>
+                                <?= htmlspecialchars($user->email) ?>
                             </td>
                             <td style="padding: 15px; color: #555;">
-                                <?= htmlspecialchars($user['phone'] ?? '---') ?>
+                                <?= htmlspecialchars($user->phone ?? '---') ?>
                             </td>
                             <td style="padding: 15px;">
                                 <?php 
                                     $bg = '#e2e3e5'; $color = '#383d41';
-                                    if ($user['role'] === 'admin') { $bg = '#f8d7da'; $color = '#721c24'; }
-                                    if ($user['role'] === 'trainer') { $bg = '#cce5ff'; $color = '#004085'; }
-                                    if ($user['role'] === 'member') { $bg = '#d4edda'; $color = '#155724'; }
+                                    if ($user->role === 'admin') { $bg = '#f8d7da'; $color = '#721c24'; }
+                                    if ($user->role === 'trainer') { $bg = '#cce5ff'; $color = '#004085'; }
+                                    if ($user->role === 'member') { $bg = '#d4edda'; $color = '#155724'; }
                                 ?>
                                 <span style="background: <?= $bg ?>; color: <?= $color ?>; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; text-transform: uppercase;">
-                                    <?= htmlspecialchars($user['role']) ?>
+                                    <?= htmlspecialchars($user->role) ?>
                                 </span>
                             </td>
                             <td style="padding: 15px; text-align: center;">
-                                <a href="/pages/admin_edit_users.php?id=<?= $user['id'] ?>" style="text-decoration: none; color: #0066cc; font-weight: bold; margin-right: 15px; font-size: 0.9rem;">Editar</a>
-                                <a href="/pages/admin_delete_user.php?id=<?= $user['id'] ?>" onclick="return confirm('Tem a certeza que deseja remover este utilizador?');" style="text-decoration: none; color: #cc0000; font-weight: bold; font-size: 0.9rem;">Remover</a>
+                                <a href="/pages/admin_edit_users.php?id=<?= $user->id ?>" style="text-decoration: none; color: #0066cc; font-weight: bold; margin-right: 15px; font-size: 0.9rem;">Editar</a>
+                                <a href="/pages/admin_delete_user.php?id=<?= $user->id ?>" onclick="return confirm('Tem a certeza que deseja remover este utilizador?');" style="text-decoration: none; color: #cc0000; font-weight: bold; font-size: 0.9rem;">Remover</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
