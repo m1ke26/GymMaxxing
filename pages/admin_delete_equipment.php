@@ -18,7 +18,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
 }
 
 require_once __DIR__ . '/../database/connection.db.php';
-require_once __DIR__ . '/../database/class.class.php';
+require_once __DIR__ . '/../database/equipment.class.php';
 
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
@@ -26,15 +26,15 @@ if ($id > 0) {
     try {
         $db = getDatabaseConnection();
         
-        GymClass::deleteClass($db, $id);
+        Equipment::delete($db, $id);
         
-        header('Location: /pages/admin_classes.php?sucesso=' . urlencode('Class deleted successfully.'));
+        header('Location: /pages/admin_equipment.php?sucesso=' . urlencode('Equipment removed from inventory successfully.'));
         exit();
     } catch (Throwable $e) {
-        header('Location: /pages/admin_classes.php?erro=' . urlencode('Error deleting class: ' . $e->getMessage()));
+        header('Location: /pages/admin_equipment.php?erro=' . urlencode('Error removing equipment: ' . $e->getMessage()));
         exit();
     }
 } else {
-    header('Location: /pages/admin_classes.php');
+    header('Location: /pages/admin_equipment.php');
     exit();
 }

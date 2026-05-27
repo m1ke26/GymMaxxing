@@ -12,6 +12,7 @@ if (function_exists('startSession')) {
     session_start();
 }
 
+// Security Check: Only Admins allowed
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header('Location: /pages/login.php');
     exit();
@@ -21,82 +22,84 @@ require_once __DIR__ . '/../database/connection.db.php';
 require_once __DIR__ . '/../database/user.class.php';
 
 $user = null;
-$msgSucesso = null;
-$msgErro = null;
+$msgSuccess = null;
+$msgError = null;
 
 try {
     $db = getDatabaseConnection();
     
+    // Process form submission (POST request)
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $idAlterar = (int)$_POST['id'];
-        $novoNome = trim($_POST['name']);
-        $novoEmail = trim($_POST['email']);
-        $novoPhone = trim($_POST['phone']);
-        $novoCargo = $_POST['role'];
+        $idToChange = (int)$_POST['id'];
+        $newName = trim($_POST['name']);
+        $newEmail = trim($_POST['email']);
+        $newPhone = trim($_POST['phone']);
+        $newRole = $_POST['role'];
 
-        $usuarioAtual = User::getUserById($db, $idAlterar);
+        $currentUser = User::getUserById($db, $idToChange);
 
-        if (!$usuarioAtual) {
-            $msgErro = "Utilizador não encontrado.";
-        } elseif ($novoNome === '' || $novoEmail === '') {
-            $msgErro = "Nome e Email são campos obrigatórios.";
+        if (!$currentUser) {
+            $msgError = "User not found.";
+        } elseif ($newName === '' || $newEmail === '') {
+            $msgError = "Name and Email are mandatory fields.";
         } else {
-            // 1. Atualiza dados principais usando o método da classe User
+            // 1. Update primary data using the User class method
             User::updateUser(
                 $db, 
-                $idAlterar, 
-                $novoNome, 
-                $usuarioAtual->username, // Mantém o username original intacto
-                $novoEmail, 
-                $novoPhone !== '' ? $novoPhone : null
+                $idToChange, 
+                $newName, 
+                $currentUser->username, // Retains the original immutable username
+                $newEmail, 
+                $newPhone !== '' ? $newPhone : null
             );
             
-            // 2. Atualiza o cargo usando o método específico da classe User
-            User::updateRole($db, $idAlterar, $novoCargo);
+            // 2. Update the system role using the dedicated User class method
+            User::updateRole($db, $idToChange, $newRole);
             
-            $msgSucesso = "Utilizador atualizado com sucesso usando os métodos oficiais!";
+            $msgSuccess = "User profile updated successfully using official methods!";
         }
     }
 
+    // Capture the User ID from GET parameters (or from POST if an error occurred)
     $userId = isset($_GET['id']) ? (int)$_GET['id'] : (isset($_POST['id']) ? (int)$_POST['id'] : 0);
     
     $user = User::getUserById($db, $userId);
 
     if (!$user) {
-        $msgErro = "Utilizador não encontrado.";
+        $msgError = "User not found.";
     }
 
 } catch (Throwable $e) {
     if (strpos($e->getMessage(), 'UNIQUE constraint failed') !== false) {
-        $msgErro = "Erro: Esse email já está a ser utilizado por outra conta.";
+        $msgError = "Error: That email address is already being used by another account.";
     } else {
-        $msgErro = "Erro no sistema: " . $e->getMessage();
+        $msgError = "System Error: " . $e->getMessage();
     }
 }
 
-$pageTitle = 'Editar Utilizador';
+$pageTitle = 'Edit User Profile';
 require_once __DIR__ . '/../templates/header.php';
 ?>
 
 <div class="admin-container" style="padding: 40px 20px; max-width: 600px; margin: 0 auto; font-family: sans-serif;">
     
     <div style="margin-bottom: 20px;">
-        <a href="/pages/admin_users.php" style="text-decoration: none; color: #666; font-weight: bold;">← Voltar para a Lista</a>
+        <a href="/pages/admin_users.php" style="text-decoration: none; color: #666; font-weight: bold;">← Back to User List</a>
     </div>
 
     <h1 style="font-size: 1.8rem; margin-bottom: 25px; border-bottom: 2px solid #eee; padding-bottom: 10px;">
-         Editar Perfil de @<?= htmlspecialchars($user ? $user->username : '') ?>
+         ⚙️ Edit Profile of @<?= htmlspecialchars($user ? $user->username : '') ?>
     </h1>
 
-    <?php if ($msgSucesso): ?>
+    <?php if ($msgSuccess): ?>
         <div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #c3e6cb;">
-             <?= htmlspecialchars($msgSucesso) ?>
+             <?= htmlspecialchars($msgSuccess) ?>
         </div>
     <?php endif; ?>
 
-    <?php if ($msgErro): ?>
+    <?php if ($msgError): ?>
         <div style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #f5c6cb;">
-             <?= htmlspecialchars($msgErro) ?>
+             <?= htmlspecialchars($msgError) ?>
         </div>
     <?php endif; ?>
 
@@ -105,35 +108,35 @@ require_once __DIR__ . '/../templates/header.php';
             <input type="hidden" name="id" value="<?= (int)$user->id ?>">
 
             <div style="margin-bottom: 20px;">
-                <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #333;">Nome Completo *</label>
+                <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #333;">Full Name *</label>
                 <input type="text" name="name" value="<?= htmlspecialchars($user->name) ?>" required 
                        style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
             </div>
 
             <div style="margin-bottom: 20px;">
-                <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #333;">Endereço de Email *</label>
+                <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #333;">Email Address *</label>
                 <input type="email" name="email" value="<?= htmlspecialchars($user->email) ?>" required 
                        style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
             </div>
 
             <div style="margin-bottom: 20px;">
-                <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #333;">Número de Telemóvel</label>
+                <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #333;">Phone Number</label>
                 <input type="text" name="phone" value="<?= htmlspecialchars($user->phone ?? '') ?>" 
                        style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
             </div>
 
             <div style="margin-bottom: 30px;">
-                <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #333;">Cargo no Ginásio (Role) *</label>
+                <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #333;">Gym Role *</label>
                 <select name="role" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; background: #fff; font-size: 0.95rem; font-weight: bold;">
-                    <option value="member" <?= $user->role === 'member' ? 'selected' : '' ?>> Member (Aluno)</option>
-                    <option value="trainer" <?= $user->role === 'trainer' ? 'selected' : '' ?>> Trainer (Treinador)</option>
-                    <option value="admin" <?= $user->role === 'admin' ? 'selected' : '' ?>> Admin (Administrador Total)</option>
+                    <option value="member" <?= $user->role === 'member' ? 'selected' : '' ?>>Member</option>
+                    <option value="trainer" <?= $user->role === 'trainer' ? 'selected' : '' ?>>Trainer</option>
+                    <option value="admin" <?= $user->role === 'admin' ? 'selected' : '' ?>>Admin</option>
                 </select>
-                <small style="color: #666; display: block; margin-top: 5px;">Mudar para "Admin" dará a este utilizador acesso total a este painel.</small>
+                <small style="color: #666; display: block; margin-top: 5px;">Switching a profile to "Admin" provides full infrastructure control permissions.</small>
             </div>
 
             <button type="submit" style="width: 100%; background: #000; color: #fff; border: none; padding: 14px; border-radius: 4px; font-weight: bold; font-size: 1rem; cursor: pointer;">
-                Salvar Alterações
+                Save Changes
             </button>
         </form>
     <?php endif; ?>

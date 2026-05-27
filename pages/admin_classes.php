@@ -12,7 +12,6 @@ if (function_exists('startSession')) {
     session_start();
 }
 
-// Trava de segurança
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header('Location: /pages/login.php');
     exit();
@@ -28,8 +27,6 @@ $erroMsg = null;
 try {
     $db = getDatabaseConnection();
 
-    // Buscamos as aulas usando a tabela real 'Class' e fazemos JOIN para obter o nome do treinador
-    // Também contamos as matrículas de cada aula através de uma subquery simples
     $sql = 'SELECT c.*, u.name as trainerName,
             (SELECT COUNT(*) FROM Enrollment e WHERE e.classId = c.id) as currentEnrollments
             FROM Class c
@@ -39,33 +36,33 @@ try {
     $stmt = $db->query($sql);
     $classes = $stmt->fetchAll();
 } catch (Throwable $e) {
-    $erroMsg = "Erro ao carregar o catálogo de aulas: " . $e->getMessage();
+    $erroMsg = "Error loading class catalogue: " . $e->getMessage();
 }
 
-$pageTitle = 'Catálogo de Aulas (Admin)';
+$pageTitle = 'Class Catalogue (Admin)';
 require_once __DIR__ . '/../templates/header.php';
 ?>
 
 <div class="admin-container" style="padding: 40px 20px; max-width: 1200px; margin: 0 auto; font-family: sans-serif;">
     
     <div style="margin-bottom: 20px;">
-        <a href="/pages/admin.php" style="text-decoration: none; color: #666; font-weight: bold;">← Voltar ao Painel Central</a>
+        <a href="/pages/admin.php" style="text-decoration: none; color: #666; font-weight: bold;">← Back to Main Dashboard</a>
     </div>
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 15px;">
-        <h1 style="margin: 0; font-size: 2rem; color: #111;"> Catálogo de Aulas</h1>
-        <a href="/pages/admin_create_class.php" style="background: #000; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; font-size: 0.9rem;">+ Criar Nova Aula</a>
+        <h1 style="margin: 0; font-size: 2rem; color: #111;">Class Catalogue</h1>
+        <a href="/pages/admin_create_class.php" style="background: #000; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; font-size: 0.9rem;">+ Create New Class</a>
     </div>
 
     <?php if (isset($_GET['sucesso'])): ?>
         <div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
-             <?= htmlspecialchars($_GET['sucesso']) ?>
+              <?= htmlspecialchars($_GET['sucesso']) ?>
         </div>
     <?php endif; ?>
 
     <?php if ($erroMsg || isset($_GET['erro'])): ?>
         <div style="background: #ffcccc; color: #cc0000; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
-             <?= htmlspecialchars($erroMsg ?? $_GET['erro']) ?>
+              <?= htmlspecialchars($erroMsg ?? $_GET['erro']) ?>
         </div>
     <?php endif; ?>
 
@@ -73,19 +70,19 @@ require_once __DIR__ . '/../templates/header.php';
         <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;">
             <thead>
                 <tr style="background: #f8f9fa; border-bottom: 2px solid #eee;">
-                    <th style="padding: 15px; color: #444; width: 80px;">Imagem</th>
-                    <th style="padding: 15px; color: #444;">Título da Aula</th>
-                    <th style="padding: 15px; color: #444;">Tipo</th>
-                    <th style="padding: 15px; color: #444;">Horário / Agenda</th>
-                    <th style="padding: 15px; color: #444;">Treinador</th>
-                    <th style="padding: 15px; color: #444; text-align: center;">Inscritos / Vagas</th>
-                    <th style="padding: 15px; color: #444; text-align: center;">Ações</th>
+                    <th style="padding: 15px; color: #444; width: 80px;">Image</th>
+                    <th style="padding: 15px; color: #444;">Class Title</th>
+                    <th style="padding: 15px; color: #444;">Type</th>
+                    <th style="padding: 15px; color: #444;">Schedule</th>
+                    <th style="padding: 15px; color: #444;">Trainer</th>
+                    <th style="padding: 15px; color: #444; text-align: center;">Enrolled / Capacity</th>
+                    <th style="padding: 15px; color: #444; text-align: center;">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <?php if (empty($classes)): ?>
                     <tr>
-                        <td colspan="7" style="padding: 30px; text-align: center; color: #888;">Nenhuma aula configurada no sistema.</td>
+                        <td colspan="7" style="padding: 30px; text-align: center; color: #888;">No classes configured in the system.</td>
                     </tr>
                 <?php else: ?>
                     <?php foreach ($classes as $class): ?>
@@ -113,7 +110,7 @@ require_once __DIR__ . '/../templates/header.php';
                                 <?= htmlspecialchars($class['schedule']) ?>
                             </td>
                             <td style="padding: 15px; color: #555;">
-                                <?= htmlspecialchars($class['trainerName'] ?? 'Desconhecido') ?>
+                                <?= htmlspecialchars($class['trainerName'] ?? 'Unknown') ?>
                             </td>
                             <td style="padding: 15px; text-align: center; font-weight: bold;">
                                 <span style="color: <?= ((int)$class['currentEnrollments'] >= (int)$class['capacity']) ? '#cc0000' : '#155724' ?>;">
@@ -122,8 +119,8 @@ require_once __DIR__ . '/../templates/header.php';
                                 <span style="color: #888; font-weight: normal;">/ <?= $class['capacity'] ?></span>
                             </td>
                             <td style="padding: 15px; text-align: center;">
-                                <a href="/pages/admin_edit_class.php?id=<?= (int)$class['id'] ?>" style="text-decoration: none; color: #0066cc; font-weight: bold; margin-right: 15px; font-size: 0.9rem;">Editar</a>
-                                <a href="/pages/admin_delete_class.php?id=<?= (int)$class['id'] ?>" onclick="return confirm('Tem a certeza que deseja excluir esta aula?');" style="text-decoration: none; color: #cc0000; font-weight: bold; font-size: 0.9rem;">Excluir</a>
+                                <a href="/pages/admin_edit_class.php?id=<?= (int)$class['id'] ?>" style="text-decoration: none; color: #0066cc; font-weight: bold; margin-right: 15px; font-size: 0.9rem;">Edit</a>
+                                <a href="/pages/admin_delete_class.php?id=<?= (int)$class['id'] ?>" onclick="return confirm('Are you sure you want to delete this class?');" style="text-decoration: none; color: #cc0000; font-weight: bold; font-size: 0.9rem;">Delete</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

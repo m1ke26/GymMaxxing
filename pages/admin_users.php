@@ -12,6 +12,7 @@ if (function_exists('startSession')) {
     session_start();
 }
 
+// Security Check: Only Admins allowed
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header('Location: /pages/login.php');
     exit();
@@ -21,17 +22,16 @@ require_once __DIR__ . '/../database/connection.db.php';
 require_once __DIR__ . '/../database/user.class.php';
 
 $users = [];
-$erroMsg = null;
+$errorMsg = null;
 
-// Captura o filtro selecionado (via método GET)
-$filtroRole = isset($_GET['role']) ? trim($_GET['role']) : '';
+
+$filterRole = isset($_GET['role']) ? trim($_GET['role']) : '';
 
 try {
     $db = getDatabaseConnection();
     
-    
-    if (in_array($filtroRole, ['member', 'trainer', 'admin'])) {
-        $users = User::getUsersByRole($db, $filtroRole);
+    if (in_array($filterRole, ['member', 'trainer', 'admin'])) {
+        $users = User::getUsersByRole($db, $filterRole);
     } else {
         
         $stmt = $db->query('SELECT * FROM User ORDER BY role, name');
@@ -50,54 +50,55 @@ try {
         }
     }
 } catch (Throwable $e) {
-    $erroMsg = "Erro ao carregar lista de utilizadores: " . $e->getMessage();
+    $errorMsg = "Error loading user list: " . $e->getMessage();
 }
 
-$pageTitle = 'Gestão de Usuários';
+$pageTitle = 'User Management';
 require_once __DIR__ . '/../templates/header.php';
 ?>
 
 <div class="admin-container" style="padding: 40px 20px; max-width: 1200px; margin: 0 auto; font-family: sans-serif;">
     
     <div style="margin-bottom: 20px;">
-        <a href="/pages/admin.php" style="text-decoration: none; color: #666; font-weight: bold;">← Voltar ao Painel Central</a>
+        <a href="/pages/admin.php" style="text-decoration: none; color: #666; font-weight: bold;">← Back to Main Dashboard</a>
     </div>
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 15px;">
-        <h1 style="margin: 0; font-size: 2rem; color: #111;">Gestão de Utilizadores</h1>
-        <a href="/pages/admin_create_user.php" style="background: #000; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; font-size: 0.9rem;">+ Criar Novo Utilizador</a>
+        <h1 style="margin: 0; font-size: 2rem; color: #111;"> User Management</h1>
+        <a href="/pages/admin_create_user.php" style="background: #000; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; font-size: 0.9rem;">+ Create New User</a>
     </div>
 
+    
     <div style="background: #f8f9fa; border: 1px solid #ddd; padding: 15px 20px; border-radius: 8px; margin-bottom: 25px; display: flex; align-items: center; gap: 15px;">
         <form method="GET" action="/pages/admin_users.php" style="display: flex; align-items: center; gap: 12px; width: 100%; flex-wrap: wrap;">
-            <label style="font-weight: bold; color: #333; font-size: 0.95rem;">Filtrar por Cargo:</label>
+            <label style="font-weight: bold; color: #333; font-size: 0.95rem;">Filter by Role:</label>
             
             <select name="role" style="padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; background: #fff; font-size: 0.9rem; min-width: 200px;">
-                <option value=""> Todos os Utilizadores</option>
-                <option value="member" <?= $filtroRole === 'member' ? 'selected' : '' ?>> Member (Alunos)</option>
-                <option value="trainer" <?= $filtroRole === 'trainer' ? 'selected' : '' ?>> Trainer (Treinadores)</option>
-                <option value="admin" <?= $filtroRole === 'admin' ? 'selected' : '' ?>> Admin (Administradores)</option>
+                <option value=""> All Users</option>
+                <option value="member" <?= $filterRole === 'member' ? 'selected' : '' ?>> Member</option>
+                <option value="trainer" <?= $filterRole === 'trainer' ? 'selected' : '' ?>> Trainer</option>
+                <option value="admin" <?= $filterRole === 'admin' ? 'selected' : '' ?>> Admin</option>
             </select>
 
             <button type="submit" style="background: #000; color: #fff; border: none; padding: 8px 16px; border-radius: 4px; font-weight: bold; font-size: 0.9rem; cursor: pointer;">
-                Filtrar
+                Filter
             </button>
 
-            <?php if ($filtroRole !== ''): ?>
-                <a href="/pages/admin_users.php" style="color: #666; font-size: 0.9rem; font-weight: bold; text-decoration: none; margin-left: 5px;"> Limpar Filtro</a>
+            <?php if ($filterRole !== ''): ?>
+                <a href="/pages/admin_users.php" style="color: #666; font-size: 0.9rem; font-weight: bold; text-decoration: none; margin-left: 5px;">Clear Filter</a>
             <?php endif; ?>
         </form>
     </div>
 
     <?php if (isset($_GET['sucesso'])): ?>
         <div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
-             <?= htmlspecialchars($_GET['sucesso']) ?>
+              <?= htmlspecialchars($_GET['sucesso']) ?>
         </div>
     <?php endif; ?>
 
-    <?php if ($erroMsg || isset($_GET['erro'])): ?>
+    <?php if ($errorMsg || isset($_GET['erro'])): ?>
         <div style="background: #ffcccc; color: #cc0000; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
-             <?= htmlspecialchars($erroMsg ?? $_GET['erro']) ?>
+              <?= htmlspecialchars($errorMsg ?? $_GET['erro']) ?>
         </div>
     <?php endif; ?>
 
@@ -105,18 +106,18 @@ require_once __DIR__ . '/../templates/header.php';
         <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;">
             <thead>
                 <tr style="background: #f8f9fa; border-bottom: 2px solid #eee;">
-                    <th style="padding: 15px; color: #444;">Nome</th>
+                    <th style="padding: 15px; color: #444;">Name</th>
                     <th style="padding: 15px; color: #444;">Username</th>
                     <th style="padding: 15px; color: #444;">Email</th>
-                    <th style="padding: 15px; color: #444;">Telemóvel</th>
-                    <th style="padding: 15px; color: #444;">Cargo</th>
-                    <th style="padding: 15px; color: #444; text-align: center;">Ações</th>
+                    <th style="padding: 15px; color: #444;">Phone</th>
+                    <th style="padding: 15px; color: #444;">Role</th>
+                    <th style="padding: 15px; color: #444; text-align: center;">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <?php if (empty($users)): ?>
                     <tr>
-                        <td colspan="6" style="padding: 30px; text-align: center; color: #888;">Nenhum utilizador encontrado para este filtro.</td>
+                        <td colspan="6" style="padding: 30px; text-align: center; color: #888;">No users found matching this filter.</td>
                     </tr>
                 <?php else: ?>
                     <?php foreach ($users as $user): ?>
@@ -145,8 +146,8 @@ require_once __DIR__ . '/../templates/header.php';
                                 </span>
                             </td>
                             <td style="padding: 15px; text-align: center;">
-                                <a href="/pages/admin_edit_users.php?id=<?= $user->id ?>" style="text-decoration: none; color: #0066cc; font-weight: bold; margin-right: 15px; font-size: 0.9rem;">Editar</a>
-                                <a href="/pages/admin_delete_user.php?id=<?= $user->id ?>" onclick="return confirm('Tem a certeza que deseja remover este utilizador?');" style="text-decoration: none; color: #cc0000; font-weight: bold; font-size: 0.9rem;">Remover</a>
+                                <a href="/pages/admin_edit_users.php?id=<?= $user->id ?>" style="text-decoration: none; color: #0066cc; font-weight: bold; margin-right: 15px; font-size: 0.9rem;">Edit</a>
+                                <a href="/pages/admin_delete_user.php?id=<?= $user->id ?>" onclick="return confirm('Are you sure you want to remove this user account?');" style="text-decoration: none; color: #cc0000; font-weight: bold; font-size: 0.9rem;">Remove</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -160,3 +161,4 @@ require_once __DIR__ . '/../templates/header.php';
 <?php 
 require_once __DIR__ . '/../templates/footer.php'; 
 ?>
+

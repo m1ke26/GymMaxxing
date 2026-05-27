@@ -20,28 +20,31 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
 
 require_once __DIR__ . '/../database/connection.db.php';
 
-$idParaApagar = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$idToDelete = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
-if ($idParaApagar <= 0) {
+if ($idToDelete <= 0) {
     header('Location: /pages/admin_users.php');
     exit();
 }
 
-if ($idParaApagar === (int)$_SESSION['user_id']) {
-    header('Location: /pages/admin_users.php?erro=' . urlencode('Não pode apagar a sua própria conta de administrador.'));
+
+if ($idToDelete === (int)$_SESSION['user_id']) {
+    header('Location: /pages/admin_users.php?erro=' . urlencode('You cannot delete your own active administrator account.'));
     exit();
 }
 
 try {
     $db = getDatabaseConnection();
     
+    
     $stmtUser = $db->prepare('DELETE FROM User WHERE id = ?');
-    $stmtUser->execute([$idParaApagar]);
+    $stmtUser->execute([$idToDelete]);
 
-    header('Location: /pages/admin_users.php?sucesso=' . urlencode('Utilizador e todas as suas dependências removidos com sucesso.'));
+    header('Location: /pages/admin_users.php?sucesso=' . urlencode('User profile and all associated data removed successfully.'));
     exit();
 
 } catch (Throwable $e) {
-    header('Location: /pages/admin_users.php?erro=' . urlencode("Não foi possível apagar: " . $e->getMessage()));
+    header('Location: /pages/admin_users.php?erro=' . urlencode("Unable to remove user: " . $e->getMessage()));
     exit();
 }
+
