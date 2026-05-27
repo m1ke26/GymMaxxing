@@ -28,7 +28,7 @@ $trainers = [];
 try {
     $db = getDatabaseConnection();
 
-    // Carrega a lista de treinadores usando o método POO oficial do grupo
+    
     $trainers = User::getUsersByRole($db, 'trainer');
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -40,23 +40,23 @@ try {
         $trainerId   = (int)$_POST['trainerId'];
         $image       = trim($_POST['image']);
 
-        // Validação básica dos campos obrigatórios
+    
         if ($title === '' || $schedule === '' || $capacity <= 0 || $trainerId <= 0) {
             $msgErro = "Por favor, preencha todos os campos obrigatórios marcados com (*).";
         } else {
-            // Chamamos o método estático da classe GymClass
+    
             GymClass::createClass(
                 $db,
                 $title,
                 $type,
                 $description !== '' ? $description : null,
-                $image !== '' ? $image : 'homepage_outdoor.png', // Fallback caso não envie imagem
+                $image !== '' ? $image : 'homepage_outdoor.png', 
                 $schedule,
                 $capacity,
                 $trainerId
             );
 
-            // Redireciona com mensagem de sucesso para a listagem de aulas
+    
             header('Location: /pages/admin_classes.php?sucesso=' . urlencode("Aula '{$title}' criada com sucesso!"));
             exit();
         }
