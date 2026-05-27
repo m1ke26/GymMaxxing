@@ -53,19 +53,19 @@ require_once __DIR__ . '/../templates/header.php';
     </div>
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 15px;">
-        <h1 style="margin: 0; font-size: 2rem; color: #111;">🏋️‍♂️ Catálogo de Aulas</h1>
+        <h1 style="margin: 0; font-size: 2rem; color: #111;"> Catálogo de Aulas</h1>
         <a href="/pages/admin_create_class.php" style="background: #000; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; font-size: 0.9rem;">+ Criar Nova Aula</a>
     </div>
 
     <?php if (isset($_GET['sucesso'])): ?>
         <div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
-            ✅ <?= htmlspecialchars($_GET['sucesso']) ?>
+             <?= htmlspecialchars($_GET['sucesso']) ?>
         </div>
     <?php endif; ?>
 
     <?php if ($erroMsg || isset($_GET['erro'])): ?>
         <div style="background: #ffcccc; color: #cc0000; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
-            ⚠️ <?= htmlspecialchars($erroMsg ?? $_GET['erro']) ?>
+             <?= htmlspecialchars($erroMsg ?? $_GET['erro']) ?>
         </div>
     <?php endif; ?>
 
