@@ -45,6 +45,14 @@ require_once __DIR__ . '/../templates/header.php';
                 <option value="Thursday">THURSDAY</option>
                 <option value="Friday">FRIDAY</option>
             </select>
+            <select id="filter-time" aria-label="Filter by time">
+                <option value="">ALL TIMES</option>
+                <option value="08:00">08:00</option>
+                <option value="09:00">09:00</option>
+                <option value="10:00">10:00</option>
+                <option value="17:00">17:00</option>
+                <option value="18:00">18:00</option>
+            </select>
         </section>
 
         <section class="class-grid" id="class-grid">

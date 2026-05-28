@@ -59,12 +59,13 @@ class GymClass {
         return $classes;
     }
 
-    static function searchClasses(PDO $db, ?string $type, ?int $trainerId, ?string $day) : array {
+    static function searchClasses(PDO $db, ?string $type, ?int $trainerId, ?string $day, ?string $time = null) : array {
         $sql = 'SELECT * FROM Class WHERE 1=1';
         $params = [];
         if ($type) { $sql .= ' AND type = ?'; $params[] = $type; }
         if ($trainerId) { $sql .= ' AND trainerId = ?'; $params[] = $trainerId; }
         if ($day) { $sql .= ' AND schedule LIKE ?'; $params[] = $day . '%'; }
+        if ($time) { $sql .= ' AND schedule LIKE ?'; $params[] = '%' . $time; }
         $stmt = $db->prepare($sql);
         $stmt->execute($params);
         $classes = [];
