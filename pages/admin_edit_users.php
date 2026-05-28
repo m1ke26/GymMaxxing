@@ -12,7 +12,6 @@ if (function_exists('startSession')) {
     session_start();
 }
 
-// Security Check: Only Admins allowed
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header('Location: /pages/login.php');
     exit();
@@ -28,13 +27,13 @@ $msgError = null;
 try {
     $db = getDatabaseConnection();
     
-    // Process form submission (POST request)
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $idToChange = (int)$_POST['id'];
         $newName = trim($_POST['name']);
         $newEmail = trim($_POST['email']);
         $newPhone = trim($_POST['phone']);
         $newRole = $_POST['role'];
+        $newActive = (int)$_POST['active'];
 
         $currentUser = User::getUserById($db, $idToChange);
 
@@ -43,26 +42,25 @@ try {
         } elseif ($newName === '' || $newEmail === '') {
             $msgError = "Name and Email are mandatory fields.";
         } else {
-            // 1. Update primary data using the User class method
             User::updateUser(
                 $db, 
                 $idToChange, 
                 $newName, 
-                $currentUser->username, // Retains the original immutable username
+                $currentUser->username, 
                 $newEmail, 
                 $newPhone !== '' ? $newPhone : null
             );
             
-            // 2. Update the system role using the dedicated User class method
             User::updateRole($db, $idToChange, $newRole);
+            
+            $stmtActive = $db->prepare('UPDATE User SET active = ? WHERE id = ?');
+            $stmtActive->execute([$newActive, $idToChange]);
             
             $msgSuccess = "User profile updated successfully using official methods!";
         }
     }
 
-    // Capture the User ID from GET parameters (or from POST if an error occurred)
     $userId = isset($_GET['id']) ? (int)$_GET['id'] : (isset($_POST['id']) ? (int)$_POST['id'] : 0);
-    
     $user = User::getUserById($db, $userId);
 
     if (!$user) {
@@ -88,7 +86,7 @@ require_once __DIR__ . '/../templates/header.php';
     </div>
 
     <h1 style="font-size: 1.8rem; margin-bottom: 25px; border-bottom: 2px solid #eee; padding-bottom: 10px;">
-         ⚙️ Edit Profile of @<?= htmlspecialchars($user ? $user->username : '') ?>
+         Edit Profile of @<?= htmlspecialchars($user ? $user->username : '') ?>
     </h1>
 
     <?php if ($msgSuccess): ?>
@@ -123,6 +121,14 @@ require_once __DIR__ . '/../templates/header.php';
                 <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #333;">Phone Number</label>
                 <input type="text" name="phone" value="<?= htmlspecialchars($user->phone ?? '') ?>" 
                        style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #333;">Account Status *</label>
+                <select name="active" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; background: #fff; font-size: 0.95rem;">
+                    <option value="1" <?= (int)$user->active === 1 ? 'selected' : '' ?>>Active Profile</option>
+                    <option value="0" <?= (int)$user->active === 0 ? 'selected' : '' ?>>Deactivated Profile</option>
+                </select>
             </div>
 
             <div style="margin-bottom: 30px;">

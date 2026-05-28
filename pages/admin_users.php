@@ -12,7 +12,6 @@ if (function_exists('startSession')) {
     session_start();
 }
 
-// Security Check: Only Admins allowed
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header('Location: /pages/login.php');
     exit();
@@ -24,17 +23,35 @@ require_once __DIR__ . '/../database/user.class.php';
 $users = [];
 $errorMsg = null;
 
-
 $filterRole = isset($_GET['role']) ? trim($_GET['role']) : '';
 
 try {
     $db = getDatabaseConnection();
     
-    if (in_array($filterRole, ['member', 'trainer', 'admin'])) {
-        $users = User::getUsersByRole($db, $filterRole);
+    if ($filterRole === 'deactivated') {
+        $stmt = $db->query('SELECT * FROM User WHERE active = 0 ORDER BY role, name');
+        while ($row = $stmt->fetch()) {
+            $users[] = new User(
+                (int)$row['id'],
+                $row['name'],
+                $row['username'],
+                $row['email'],
+                $row['password'],
+                $row['phone'],
+                $row['photo'],
+                $row['role'],
+                (int)$row['active']
+            );
+        }
+    } elseif (in_array($filterRole, ['member', 'trainer', 'admin'])) {
+        $allRoles = User::getUsersByRole($db, $filterRole);
+        foreach ($allRoles as $u) {
+            if ((int)$u->active === 1) {
+                $users[] = $u;
+            }
+        }
     } else {
-        
-        $stmt = $db->query('SELECT * FROM User ORDER BY role, name');
+        $stmt = $db->query('SELECT * FROM User WHERE active = 1 ORDER BY role, name');
         while ($row = $stmt->fetch()) {
             $users[] = new User(
                 (int)$row['id'],
@@ -64,20 +81,20 @@ require_once __DIR__ . '/../templates/header.php';
     </div>
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 15px;">
-        <h1 style="margin: 0; font-size: 2rem; color: #111;"> User Management</h1>
+        <h1 style="margin: 0; font-size: 2rem; color: #111;">User Management</h1>
         <a href="/pages/admin_create_user.php" style="background: #000; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; font-size: 0.9rem;">+ Create New User</a>
     </div>
 
-    
     <div style="background: #f8f9fa; border: 1px solid #ddd; padding: 15px 20px; border-radius: 8px; margin-bottom: 25px; display: flex; align-items: center; gap: 15px;">
         <form method="GET" action="/pages/admin_users.php" style="display: flex; align-items: center; gap: 12px; width: 100%; flex-wrap: wrap;">
-            <label style="font-weight: bold; color: #333; font-size: 0.95rem;">Filter by Role:</label>
+            <label style="font-weight: bold; color: #333; font-size: 0.95rem;">Filter View:</label>
             
             <select name="role" style="padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; background: #fff; font-size: 0.9rem; min-width: 200px;">
-                <option value=""> All Users</option>
-                <option value="member" <?= $filterRole === 'member' ? 'selected' : '' ?>> Member</option>
-                <option value="trainer" <?= $filterRole === 'trainer' ? 'selected' : '' ?>> Trainer</option>
-                <option value="admin" <?= $filterRole === 'admin' ? 'selected' : '' ?>> Admin</option>
+                <option value="">Active Users (All Roles)</option>
+                <option value="member" <?= $filterRole === 'member' ? 'selected' : '' ?>>Active Members</option>
+                <option value="trainer" <?= $filterRole === 'trainer' ? 'selected' : '' ?>>Active Trainers</option>
+                <option value="admin" <?= $filterRole === 'admin' ? 'selected' : '' ?>>Active Admins</option>
+                <option value="deactivated" <?= $filterRole === 'deactivated' ? 'selected' : '' ?>>Deactivated Accounts</option>
             </select>
 
             <button type="submit" style="background: #000; color: #fff; border: none; padding: 8px 16px; border-radius: 4px; font-weight: bold; font-size: 0.9rem; cursor: pointer;">
@@ -117,11 +134,11 @@ require_once __DIR__ . '/../templates/header.php';
             <tbody>
                 <?php if (empty($users)): ?>
                     <tr>
-                        <td colspan="6" style="padding: 30px; text-align: center; color: #888;">No users found matching this filter.</td>
+                        <td colspan="6" style="padding: 30px; text-align: center; color: #888;">No users found matching this filter criteria.</td>
                     </tr>
                 <?php else: ?>
                     <?php foreach ($users as $user): ?>
-                        <tr style="border-bottom: 1px solid #eee;">
+                        <tr style="border-bottom: 1px solid #eee; <?= (int)$user->active === 0 ? 'background: #fdf2f2;' : '' ?>">
                             <td style="padding: 15px; font-weight: bold; color: #111;">
                                 <?= htmlspecialchars($user->name) ?>
                             </td>
@@ -134,20 +151,35 @@ require_once __DIR__ . '/../templates/header.php';
                             <td style="padding: 15px; color: #555;">
                                 <?= htmlspecialchars($user->phone ?? '---') ?>
                             </td>
-                            <td style="padding: 15px;">
+                            <td style="padding: 15px; display: flex; gap: 6px; align-items: center; height: 53px; box-sizing: border-box;">
                                 <?php 
                                     $bg = '#e2e3e5'; $color = '#383d41';
                                     if ($user->role === 'admin') { $bg = '#f8d7da'; $color = '#721c24'; }
                                     if ($user->role === 'trainer') { $bg = '#cce5ff'; $color = '#004085'; }
                                     if ($user->role === 'member') { $bg = '#d4edda'; $color = '#155724'; }
+                                    
+                                    if ((int)$user->active === 0) {
+                                        $bg = '#eee'; $color = '#888';
+                                    }
                                 ?>
                                 <span style="background: <?= $bg ?>; color: <?= $color ?>; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; text-transform: uppercase;">
                                     <?= htmlspecialchars($user->role) ?>
                                 </span>
+                                
+                                <?php if ((int)$user->active === 0): ?>
+                                    <span style="background: #6c757d; color: #fff; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; text-transform: uppercase;">
+                                        Deactivated
+                                    </span>
+                                <?php endif; ?>
                             </td>
                             <td style="padding: 15px; text-align: center;">
-                                <a href="/pages/admin_edit_users.php?id=<?= $user->id ?>" style="text-decoration: none; color: #0066cc; font-weight: bold; margin-right: 15px; font-size: 0.9rem;">Edit</a>
-                                <a href="/pages/admin_delete_user.php?id=<?= $user->id ?>" onclick="return confirm('Are you sure you want to remove this user account?');" style="text-decoration: none; color: #cc0000; font-weight: bold; font-size: 0.9rem;">Remove</a>
+                                <?php if ((int)$user->active === 0): ?>
+                                    <a href="/pages/admin_edit_users.php?id=<?= $user->id ?>" style="text-decoration: none; color: #28a745; font-weight: bold; margin-right: 15px; font-size: 0.9rem;">Reactivate</a>
+                                    <a href="/pages/admin_permanent_delete_user.php?id=<?= $user->id ?>" onclick="return confirm('Are you absolutely sure you want to permanently delete this user from the database? This action cannot be undone.');" style="text-decoration: none; color: #dc3545; font-weight: bold; font-size: 0.9rem;">Delete Permanently</a>
+                                <?php else: ?>
+                                    <a href="/pages/admin_edit_users.php?id=<?= $user->id ?>" style="text-decoration: none; color: #0066cc; font-weight: bold; margin-right: 15px; font-size: 0.9rem;">Edit</a>
+                                    <a href="/pages/admin_delete_user.php?id=<?= $user->id ?>" onclick="return confirm('Are you sure you want to deactivate this user account? They will lose access immediately.');" style="text-decoration: none; color: #cc0000; font-weight: bold; font-size: 0.9rem;">Deactivate</a>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -161,4 +193,3 @@ require_once __DIR__ . '/../templates/header.php';
 <?php 
 require_once __DIR__ . '/../templates/footer.php'; 
 ?>
-

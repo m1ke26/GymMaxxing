@@ -12,7 +12,6 @@ if (function_exists('startSession')) {
     session_start();
 }
 
-
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header('Location: /pages/login.php');
     exit();
@@ -20,31 +19,29 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
 
 require_once __DIR__ . '/../database/connection.db.php';
 
-$idToDelete = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$idToDeactivate = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
-if ($idToDelete <= 0) {
+if ($idToDeactivate <= 0) {
     header('Location: /pages/admin_users.php');
     exit();
 }
 
-
-if ($idToDelete === (int)$_SESSION['user_id']) {
-    header('Location: /pages/admin_users.php?erro=' . urlencode('You cannot delete your own active administrator account.'));
+if (isset($_SESSION['user_id']) && $idToDeactivate === (int)$_SESSION['user_id']) {
+    header('Location: /pages/admin_users.php?erro=' . urlencode('You cannot deactivate your own active administrator account.'));
     exit();
 }
 
 try {
     $db = getDatabaseConnection();
     
-    
-    $stmtUser = $db->prepare('DELETE FROM User WHERE id = ?');
-    $stmtUser->execute([$idToDelete]);
+    $stmtUser = $db->prepare('UPDATE User SET active = 0 WHERE id = ?');
+    $stmtUser->execute([$idToDeactivate]);
 
-    header('Location: /pages/admin_users.php?sucesso=' . urlencode('User profile and all associated data removed successfully.'));
+    header('Location: /pages/admin_users.php?sucesso=' . urlencode('User account has been successfully deactivated.'));
     exit();
 
 } catch (Throwable $e) {
-    header('Location: /pages/admin_users.php?erro=' . urlencode("Unable to remove user: " . $e->getMessage()));
+    header('Location: /pages/admin_users.php?erro=' . urlencode("Unable to deactivate user: " . $e->getMessage()));
     exit();
 }
 
