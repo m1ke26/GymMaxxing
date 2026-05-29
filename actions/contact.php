@@ -33,8 +33,6 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit();
 }
 
-// In a real app, this would send an email or store in DB
-// For now, just show a success message
 setFlash('success', 'Thank you for your message! We will get back to you soon.');
 header('Location: /pages/contact.php');
 exit();

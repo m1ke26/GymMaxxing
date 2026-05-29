@@ -1,8 +1,6 @@
 'use strict';
 
-/* ============================
-   UTILITY FUNCTIONS
-   ============================ */
+/* utility functions */
 
 function getCsrfToken() {
     var el = document.getElementById('csrf-token');
@@ -33,9 +31,7 @@ function showToast(message, type) {
     }, 3000);
 }
 
-/* ============================
-   CLASSES PAGE — AJAX FILTERS
-   ============================ */
+/* classes page — ajax filters */
 
 function initClassFilters() {
     var filterType    = document.getElementById('filter-type');
@@ -119,9 +115,7 @@ function renderClasses(classes, container) {
     initEnrollButtons();
 }
 
-/* ============================
-   ENROLLMENT — AJAX
-   ============================ */
+/* enrollment — ajax */
 
 function initEnrollButtons() {
     var buttons = document.querySelectorAll('.enroll-btn');
@@ -171,9 +165,7 @@ function initEnrollButtons() {
     });
 }
 
-/* ============================
-   PROFILE — UNENROLL
-   ============================ */
+/* profile — unenroll */
 
 function initProfileUnenroll() {
     var buttons = document.querySelectorAll('.unenroll-profile-btn');
@@ -207,9 +199,7 @@ function initProfileUnenroll() {
     });
 }
 
-/* ============================
-   EQUIPMENT FILTER
-   ============================ */
+/* equipment filter */
 
 function initEquipmentFilter() {
     var filter = document.getElementById('equipment-filter');
@@ -231,9 +221,7 @@ function initEquipmentFilter() {
     });
 }
 
-/* ============================
-   FLASH MESSAGES AUTO-HIDE
-   ============================ */
+/* flash messages auto-hide */
 
 function initFlashMessages() {
     var flashes = document.querySelectorAll('.flash-error, .flash-success');
@@ -245,9 +233,7 @@ function initFlashMessages() {
     });
 }
 
-/* ============================
-   ADMIN PANEL
-   ============================ */
+/* admin panel */
 
 function initAdminPanel() {
     // Tab switching
@@ -463,9 +449,7 @@ function initAdminEquipment() {
     });
 }
 
-/* ============================
-   PASSWORD TOGGLE
-   ============================ */
+/* password toggle */
 
 function initPasswordToggle() {
     var toggles = document.querySelectorAll('.toggle-password');
@@ -485,9 +469,7 @@ function initPasswordToggle() {
     });
 }
 
-/* ============================
-   REVIEWS — MODAL + AJAX
-   ============================ */
+/* reviews — modal + ajax */
 
 function initReviews() {
     var modal      = document.getElementById('review-modal');
@@ -588,9 +570,7 @@ function initReviews() {
     });
 }
 
-/* ============================
-   TIER SELECTION — JOIN US
-   ============================ */
+/* tier selection — join us */
 
 function initTierSelect() {
     var buttons = document.querySelectorAll('.tier-select-btn');
@@ -633,9 +613,7 @@ function initTierSelect() {
     });
 }
 
-/* ============================
-   HELPER FUNCTIONS
-   ============================ */
+/* helper functions */
 
 function escapeHtml(str) {
     var div = document.createElement('div');
@@ -648,9 +626,7 @@ function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-/* ============================
-   INIT ON DOM READY
-   ============================ */
+/* init on dom ready */
 
 document.addEventListener('DOMContentLoaded', function() {
     initClassFilters();

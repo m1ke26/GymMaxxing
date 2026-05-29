@@ -1,4 +1,4 @@
-/* ==================== HEADER ==================== */
+/*header */
 
 body > header {
     padding: 20px;
@@ -21,7 +21,7 @@ body > header:hover .social-links img {
     filter: invert(1);
 }
 
-/* ==================== NAVIGATION ==================== */
+/*navigation */
 
 nav {
     display: flex;
@@ -48,7 +48,7 @@ nav {
     width: 150px;
 }
 
-/* ==================== SOCIAL LINKS ==================== */
+/*social links */
 
 .social-links {
     display: flex;
@@ -66,7 +66,7 @@ header .social-links {
     right: 5px;
 }
 
-/* ==================== FOOTER ==================== */
+/*footer */
 
 footer {
     padding: 20px;
@@ -108,7 +108,7 @@ footer p {
     font-size: 15px;
 }
 
-/* ==================== PAGE HERO ==================== */
+/*page hero */
 
 .page-hero {
     text-align: center;
@@ -126,7 +126,7 @@ footer p {
     letter-spacing: 2px;
 }
 
-/* ==================== BUTTON COMPONENT ==================== */
+/*button component */
 
 .button-join {
     display: block;
@@ -149,7 +149,7 @@ footer p {
     color: black;
 }
 
-/* ==================== SERVICE CARD COMPONENT ==================== */
+/*service card component */
 
 .svc-card {
     display: flex;
@@ -199,7 +199,7 @@ footer p {
     color: white;
 }
 
-/* ==================== RESPONSIVE ==================== */
+/*responsive */
 
 @media (max-width: 900px) {
     header .social-links {

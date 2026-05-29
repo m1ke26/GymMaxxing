@@ -48,7 +48,6 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit();
 }
 
-// Check email uniqueness (exclude current user)
 $existingEmail = User::getUserByEmail($db, $email);
 if ($existingEmail && $existingEmail->id !== $userId) {
     setFlash('error', 'This email is already in use.');
@@ -56,7 +55,6 @@ if ($existingEmail && $existingEmail->id !== $userId) {
     exit();
 }
 
-// Check username uniqueness (exclude current user)
 $existingUsername = User::getUserByUsername($db, $username);
 if ($existingUsername && $existingUsername->id !== $userId) {
     setFlash('error', 'This username is already taken.');
@@ -64,7 +62,6 @@ if ($existingUsername && $existingUsername->id !== $userId) {
     exit();
 }
 
-// Handle photo upload
 if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
     $allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
     $finfo   = new finfo(FILEINFO_MIME_TYPE);
@@ -100,7 +97,6 @@ if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
     }
 }
 
-// Update trainer profile if trainer
 if ($user->role === 'trainer') {
     $bio            = trim($_POST['bio'] ?? '');
     $specialization = trim($_POST['specialization'] ?? '');

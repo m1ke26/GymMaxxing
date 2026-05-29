@@ -36,7 +36,7 @@ $db     = getDatabaseConnection();
 $entity = $input['entity'] ?? '';
 $action = $input['action'] ?? '';
 
-// ===== USER MANAGEMENT =====
+// user management
 if ($entity === 'user') {
 
     if ($action === 'toggle') {
@@ -77,7 +77,7 @@ if ($entity === 'user') {
     }
 }
 
-// ===== CLASS MANAGEMENT =====
+// class management
 if ($entity === 'class') {
 
     if ($action === 'create') {
@@ -116,7 +116,7 @@ if ($entity === 'class') {
     }
 }
 
-// ===== EQUIPMENT MANAGEMENT =====
+// equipment management
 if ($entity === 'equipment') {
 
     if ($action === 'create') {

@@ -91,10 +91,8 @@ if ($action === 'login') {
         exit();
     }
 
-    // Create user as member
     $userId = User::createUser($db, $name, $name, $email, $password, $phone, 'member');
 
-    // Create default member profile (citizen tier)
     MemberProfile::create($db, $userId, 'citizen');
 
     loginUser($userId, 'member');

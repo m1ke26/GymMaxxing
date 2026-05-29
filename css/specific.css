@@ -2,14 +2,14 @@ body {
     overflow-x: hidden;
 }
 
-/* ================== HOMEPAGE — Banners ================== */
+/*homepage — banners */
 
 #FirstBanner img,
 #SecondBanner img {
     width: 100%;
 }
 
-/* ================== HOMEPAGE — Services Section ================== */
+/*homepage — services section */
 
 #services {
     margin: 100px 0;
@@ -72,7 +72,7 @@ body {
     cursor: pointer;
 }
 
-/* ================== HOMEPAGE — Subscriptions Section ================== */
+/*homepage — subscriptions section */
 
 #subscriptions {
     margin: 60px 0;
@@ -122,7 +122,7 @@ body {
     text-align: center;
 }
 
-/* ================== SERVICES PAGE ================== */
+/*services page */
 
 #svc-grid {
     display: grid;
@@ -133,7 +133,7 @@ body {
     border: 1px solid #000;
 }
 
-/* ================== JOIN US PAGE ================== */
+/*join us page */
 
 .choice-section {
     text-align: center;
@@ -215,7 +215,7 @@ body {
     text-align: center;
 }
 
-/* ================== LOGIN PAGE ================== */
+/*login page */
 
 .login-page-wrapper {
     min-height: 80vh;
@@ -366,7 +366,7 @@ body {
     font-weight: bold;
 }
 
-/* ================== CLASSES PAGE ================== */
+/*classes page */
 
 .class-filters {
     display: flex;
@@ -463,7 +463,7 @@ body {
     margin: 3px 0;
 }
 
-/* ================== TRAINERS PAGE ================== */
+/*trainers page */
 
 .trainers-list {
     max-width: 1000px;
@@ -544,7 +544,7 @@ body {
     margin: 4px 0;
 }
 
-/* ================== CONTACT PAGE ================== */
+/*contact page */
 
 .contact-content {
     display: flex;
@@ -661,7 +661,7 @@ body {
     background: #333;
 }
 
-/* ================== PROFILE PAGE ================== */
+/*profile page */
 
 .profile-content {
     display: flex;
@@ -851,7 +851,7 @@ body {
     color: #555;
 }
 
-/* ================== TRAINER ROSTER ================== */
+/*trainer roster */
 
 .roster-class {
     border: 1px solid #000;
@@ -924,7 +924,7 @@ body {
     color: #888;
 }
 
-/* ================== EQUIPMENT PAGE ================== */
+/*equipment page */
 
 .equipment-filters {
     display: flex;
@@ -1016,7 +1016,7 @@ body {
     color: #444;
 }
 
-/* ================== ADMIN PANEL ================== */
+/*admin panel */
 
 .admin-stats {
     display: flex;
@@ -1268,7 +1268,7 @@ body {
     margin-top: 8px;
 }
 
-/* ================== ADMIN PAGES (Multi-Page) ================== */
+/*admin pages (multi-page) */
 
 /* --- Layout --- */
 .admin-page {
@@ -1773,7 +1773,7 @@ body {
     .admin-dash-grid { grid-template-columns: 1fr; }
 }
 
-/* ================== TOAST NOTIFICATIONS ================== */
+/*toast notifications */
 
 .toast {
     position: fixed;
@@ -1805,7 +1805,7 @@ body {
     color: #fff;
 }
 
-/* ================== FLASH MESSAGES ================== */
+/*flash messages */
 
 .flash-error,
 .flash-success {
@@ -1829,7 +1829,7 @@ body {
     border: 1px solid #c3e6cb;
 }
 
-/* ================== MODAL ================== */
+/*modal */
 
 .modal {
     position: fixed;
@@ -1919,7 +1919,7 @@ body {
     background: #f5f5f5;
 }
 
-/* ================== NO RESULTS ================== */
+/*no results */
 
 .no-results {
     grid-column: 1 / -1;
@@ -1930,7 +1930,7 @@ body {
     color: #555;
 }
 
-/* ================== RESPONSIVE ================== */
+/*responsive */
 
 @media (max-width: 1050px) {
     #services li img {
