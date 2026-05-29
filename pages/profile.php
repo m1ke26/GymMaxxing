@@ -67,10 +67,10 @@ require_once __DIR__ . '/../templates/header.php';
         </section>
 
         <?php if ($errorMsg): ?>
-            <div class="flash-error" style="max-width:1100px;margin:20px auto 0;padding:14px 20px;"><?= htmlspecialchars($errorMsg) ?></div>
+            <div class="flash-error flash-error--profile"><?= htmlspecialchars($errorMsg) ?></div>
         <?php endif; ?>
         <?php if ($successMsg): ?>
-            <div class="flash-success" style="max-width:1100px;margin:20px auto 0;padding:14px 20px;"><?= htmlspecialchars($successMsg) ?></div>
+            <div class="flash-success flash-success--profile"><?= htmlspecialchars($successMsg) ?></div>
         <?php endif; ?>
 
         <section class="profile-content">
@@ -91,7 +91,7 @@ require_once __DIR__ . '/../templates/header.php';
                 ?>
                     <p class="profile-tier"><?= htmlspecialchars(strtoupper($memberProfile->tier)) ?> TIER</p>
                     <p class="profile-tier-info">Enrollments: <?= $currentEnrollCount ?> / <?= $maxEnroll > 0 ? $maxEnroll : '∞' ?></p>
-                    <a href="/pages/joinus.php" class="svc-btn" style="margin-top:10px;display:inline-block;text-align:center;">CHANGE PLAN</a>
+                    <a href="/pages/joinus.php" class="svc-btn profile-change-plan">CHANGE PLAN</a>
                 <?php endif; ?>
                 <a href="/actions/logout.php" class="svc-btn logout-btn">LOGOUT</a>
             </div>

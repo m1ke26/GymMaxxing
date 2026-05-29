@@ -27,7 +27,7 @@ $filterRole = isset($_GET['role']) ? trim($_GET['role']) : '';
 
 try {
     $db = getDatabaseConnection();
-    
+
     if ($filterRole === 'deactivated') {
         $stmt = $db->query('SELECT * FROM User WHERE active = 0 ORDER BY role, name');
         while ($row = $stmt->fetch()) {
@@ -74,22 +74,22 @@ $pageTitle = 'User Management';
 require_once __DIR__ . '/../templates/header.php';
 ?>
 
-<div class="admin-container" style="padding: 40px 20px; max-width: 1200px; margin: 0 auto; font-family: sans-serif;">
-    
-    <div style="margin-bottom: 20px;">
-        <a href="/pages/admin.php" style="text-decoration: none; color: #666; font-weight: bold;">← Back to Main Dashboard</a>
+<div class="admin-page">
+
+    <div class="admin-back">
+        <a href="/pages/admin.php">&larr; Back to Main Dashboard</a>
     </div>
 
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 15px;">
-        <h1 style="margin: 0; font-size: 2rem; color: #111;">User Management</h1>
-        <a href="/pages/admin_create_user.php" style="background: #000; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; font-size: 0.9rem;">+ Create New User</a>
+    <div class="admin-page-header">
+        <h1>User Management</h1>
+        <a href="/pages/admin_create_user.php" class="admin-create-link">+ Create New User</a>
     </div>
 
-    <div style="background: #f8f9fa; border: 1px solid #ddd; padding: 15px 20px; border-radius: 8px; margin-bottom: 25px; display: flex; align-items: center; gap: 15px;">
-        <form method="GET" action="/pages/admin_users.php" style="display: flex; align-items: center; gap: 12px; width: 100%; flex-wrap: wrap;">
-            <label style="font-weight: bold; color: #333; font-size: 0.95rem;">Filter View:</label>
-            
-            <select name="role" style="padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; background: #fff; font-size: 0.9rem; min-width: 200px;">
+    <div class="admin-filter-bar">
+        <form method="GET" action="/pages/admin_users.php">
+            <label>Filter View:</label>
+
+            <select name="role">
                 <option value="">Active Users (All Roles)</option>
                 <option value="member" <?= $filterRole === 'member' ? 'selected' : '' ?>>Active Members</option>
                 <option value="trainer" <?= $filterRole === 'trainer' ? 'selected' : '' ?>>Active Trainers</option>
@@ -97,88 +97,78 @@ require_once __DIR__ . '/../templates/header.php';
                 <option value="deactivated" <?= $filterRole === 'deactivated' ? 'selected' : '' ?>>Deactivated Accounts</option>
             </select>
 
-            <button type="submit" style="background: #000; color: #fff; border: none; padding: 8px 16px; border-radius: 4px; font-weight: bold; font-size: 0.9rem; cursor: pointer;">
-                Filter
-            </button>
+            <button type="submit" class="admin-filter-btn">Filter</button>
 
             <?php if ($filterRole !== ''): ?>
-                <a href="/pages/admin_users.php" style="color: #666; font-size: 0.9rem; font-weight: bold; text-decoration: none; margin-left: 5px;">Clear Filter</a>
+                <a href="/pages/admin_users.php" class="admin-clear-filter">Clear Filter</a>
             <?php endif; ?>
         </form>
     </div>
 
     <?php if (isset($_GET['sucesso'])): ?>
-        <div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
+        <div class="admin-msg-success">
               <?= htmlspecialchars($_GET['sucesso']) ?>
         </div>
     <?php endif; ?>
 
     <?php if ($errorMsg || isset($_GET['erro'])): ?>
-        <div style="background: #ffcccc; color: #cc0000; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
+        <div class="admin-msg-error admin-msg-error--alt">
               <?= htmlspecialchars($errorMsg ?? $_GET['erro']) ?>
         </div>
     <?php endif; ?>
 
-    <div style="overflow-x: auto; background: #fff; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;">
+    <div class="admin-table-wrap">
+        <table class="admin-pg-table">
             <thead>
-                <tr style="background: #f8f9fa; border-bottom: 2px solid #eee;">
-                    <th style="padding: 15px; color: #444;">Name</th>
-                    <th style="padding: 15px; color: #444;">Username</th>
-                    <th style="padding: 15px; color: #444;">Email</th>
-                    <th style="padding: 15px; color: #444;">Phone</th>
-                    <th style="padding: 15px; color: #444;">Role</th>
-                    <th style="padding: 15px; color: #444; text-align: center;">Actions</th>
+                <tr>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Role</th>
+                    <th class="text-center">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <?php if (empty($users)): ?>
                     <tr>
-                        <td colspan="6" style="padding: 30px; text-align: center; color: #888;">No users found matching this filter criteria.</td>
+                        <td colspan="6" class="admin-empty-row">No users found matching this filter criteria.</td>
                     </tr>
                 <?php else: ?>
                     <?php foreach ($users as $user): ?>
-                        <tr style="border-bottom: 1px solid #eee; <?= (int)$user->active === 0 ? 'background: #fdf2f2;' : '' ?>">
-                            <td style="padding: 15px; font-weight: bold; color: #111;">
-                                <?= htmlspecialchars($user->name) ?>
-                            </td>
-                            <td style="padding: 15px; color: #555;">
-                                @<?= htmlspecialchars($user->username) ?>
-                            </td>
-                            <td style="padding: 15px; color: #555;">
-                                <?= htmlspecialchars($user->email) ?>
-                            </td>
-                            <td style="padding: 15px; color: #555;">
-                                <?= htmlspecialchars($user->phone ?? '---') ?>
-                            </td>
-                            <td style="padding: 15px; display: flex; gap: 6px; align-items: center; height: 53px; box-sizing: border-box;">
-                                <?php 
-                                    $bg = '#e2e3e5'; $color = '#383d41';
-                                    if ($user->role === 'admin') { $bg = '#f8d7da'; $color = '#721c24'; }
-                                    if ($user->role === 'trainer') { $bg = '#cce5ff'; $color = '#004085'; }
-                                    if ($user->role === 'member') { $bg = '#d4edda'; $color = '#155724'; }
-                                    
-                                    if ((int)$user->active === 0) {
-                                        $bg = '#eee'; $color = '#888';
-                                    }
-                                ?>
-                                <span style="background: <?= $bg ?>; color: <?= $color ?>; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; text-transform: uppercase;">
-                                    <?= htmlspecialchars($user->role) ?>
-                                </span>
-                                
+                        <?php
+                            $rowClass = (int)$user->active === 0 ? 'admin-row-deactivated' : '';
+                            $badgeClass = 'badge';
+                            if ((int)$user->active === 0) {
+                                $badgeClass .= ' badge--deactivated';
+                            } elseif ($user->role === 'admin') {
+                                $badgeClass .= ' badge--admin';
+                            } elseif ($user->role === 'trainer') {
+                                $badgeClass .= ' badge--trainer';
+                            } elseif ($user->role === 'member') {
+                                $badgeClass .= ' badge--member';
+                            } else {
+                                $badgeClass .= ' badge--default';
+                            }
+                        ?>
+                        <tr class="<?= $rowClass ?>">
+                            <td class="text-bold"><?= htmlspecialchars($user->name) ?></td>
+                            <td class="text-muted">@<?= htmlspecialchars($user->username) ?></td>
+                            <td class="text-muted"><?= htmlspecialchars($user->email) ?></td>
+                            <td class="text-muted"><?= htmlspecialchars($user->phone ?? '---') ?></td>
+                            <td class="admin-role-cell">
+                                <span class="<?= $badgeClass ?>"><?= htmlspecialchars($user->role) ?></span>
                                 <?php if ((int)$user->active === 0): ?>
-                                    <span style="background: #6c757d; color: #fff; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; text-transform: uppercase;">
-                                        Deactivated
-                                    </span>
+                                    <span class="badge badge--inactive">Deactivated</span>
                                 <?php endif; ?>
                             </td>
-                            <td style="padding: 15px; text-align: center;">
+                            <td class="text-center">
                                 <?php if ((int)$user->active === 0): ?>
-                                    <a href="/pages/admin_edit_users.php?id=<?= $user->id ?>" style="text-decoration: none; color: #28a745; font-weight: bold; margin-right: 15px; font-size: 0.9rem;">Reactivate</a>
-                                    <a href="/pages/admin_permanent_delete_user.php?id=<?= $user->id ?>" onclick="return confirm('Are you absolutely sure you want to permanently delete this user from the database? This action cannot be undone.');" style="text-decoration: none; color: #dc3545; font-weight: bold; font-size: 0.9rem;">Delete Permanently</a>
+                                    <a href="/pages/admin_edit_users.php?id=<?= $user->id ?>" class="admin-act-reactivate">Reactivate</a>
+                                    <a href="/pages/admin_permanent_delete_user.php?id=<?= $user->id ?>" onclick="return confirm('Are you absolutely sure you want to permanently delete this user from the database? This action cannot be undone.');" class="admin-act-perm-delete">Delete Permanently</a>
                                 <?php else: ?>
-                                    <a href="/pages/admin_edit_users.php?id=<?= $user->id ?>" style="text-decoration: none; color: #0066cc; font-weight: bold; margin-right: 15px; font-size: 0.9rem;">Edit</a>
-                                    <a href="/pages/admin_delete_user.php?id=<?= $user->id ?>" onclick="return confirm('Are you sure you want to deactivate this user account? They will lose access immediately.');" style="text-decoration: none; color: #cc0000; font-weight: bold; font-size: 0.9rem;">Deactivate</a>
+                                    <a href="/pages/admin_edit_users.php?id=<?= $user->id ?>" class="admin-act-edit">Edit</a>
+                                    <a href="/pages/admin_delete_user.php?id=<?= $user->id ?>" onclick="return confirm('Are you sure you want to deactivate this user account? They will lose access immediately.');" class="admin-act-delete">Deactivate</a>
                                 <?php endif; ?>
                             </td>
                         </tr>
@@ -190,6 +180,6 @@ require_once __DIR__ . '/../templates/header.php';
 
 </div>
 
-<?php 
-require_once __DIR__ . '/../templates/footer.php'; 
+<?php
+require_once __DIR__ . '/../templates/footer.php';
 ?>

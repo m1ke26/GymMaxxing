@@ -17,10 +17,10 @@ require_once __DIR__ . '/../templates/header.php';
 ?>
 
         <?php if ($errorMsg): ?>
-            <div class="flash-error" style="max-width:900px;margin:20px auto 0;"><?= htmlspecialchars($errorMsg) ?></div>
+            <div class="flash-error flash-error--login"><?= htmlspecialchars($errorMsg) ?></div>
         <?php endif; ?>
         <?php if ($successMsg): ?>
-            <div class="flash-success" style="max-width:900px;margin:20px auto 0;"><?= htmlspecialchars($successMsg) ?></div>
+            <div class="flash-success flash-success--login"><?= htmlspecialchars($successMsg) ?></div>
         <?php endif; ?>
 
         <div class="login-page-wrapper">
