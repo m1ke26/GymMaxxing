@@ -55,8 +55,35 @@ try {
             
             $stmtActive = $db->prepare('UPDATE User SET active = ? WHERE id = ?');
             $stmtActive->execute([$newActive, $idToChange]);
+
+            if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+                $fileTmpPath = $_FILES['photo']['tmp_path'];
+                $fileName = $_FILES['photo']['name'];
+                $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+                
+                $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+                
+                if (in_array($fileExtension, $allowedExtensions)) {
+                    $newFileName = 'user_' . $idToChange . '_' . time() . '.' . $fileExtension;
+                    $uploadFileDir = __DIR__ . '/../uploads/';
+                    
+                    if (!is_dir($uploadFileDir)) {
+                        mkdir($uploadFileDir, 0755, true);
+                    }
+                    
+                    $destPath = $uploadFileDir . $newFileName;
+                    if (move_uploaded_file($fileTmpPath, $destPath)) {
+                        $stmtPhoto = $db->prepare('UPDATE User SET photo = ? WHERE id = ?');
+                        $stmtPhoto->execute([$newFileName, $idToChange]);
+                    }
+                } else {
+                    $msgError = "Invalid file extension. Only JPG, JPEG, PNG, GIF, and WEBP are allowed.";
+                }
+            }
             
-            $msgSuccess = "User profile updated successfully using official methods!";
+            if (!$msgError) {
+                $msgSuccess = "User profile updated successfully using official methods!";
+            }
         }
     }
 
@@ -102,7 +129,7 @@ require_once __DIR__ . '/../templates/header.php';
     <?php endif; ?>
 
     <?php if ($user): ?>
-        <form method="POST" action="/pages/admin_edit_users.php" style="background: #fff; border: 1px solid #ddd; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+        <form method="POST" action="/pages/admin_edit_users.php" enctype="multipart/form-data" style="background: #fff; border: 1px solid #ddd; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
             <input type="hidden" name="id" value="<?= (int)$user->id ?>">
 
             <div style="margin-bottom: 20px;">
@@ -121,6 +148,17 @@ require_once __DIR__ . '/../templates/header.php';
                 <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #333;">Phone Number</label>
                 <input type="text" name="phone" value="<?= htmlspecialchars($user->phone ?? '') ?>" 
                        style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #333;">Profile Image</label>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <input type="file" name="photo" id="photo-import" style="display: none;">
+                    <label sprintf="photo-import" for="photo-import" style="display: inline-block; text-align: center; background: #f4f4f5; border: 1px solid #e4e4e7; color: #18181b; padding: 10px 20px; border-radius: 4px; font-weight: bold; font-size: 0.9rem; cursor: pointer; transition: background 0.2s;">
+                        Import Profile Photo
+                    </label>
+                    <small style="color: #666; display: block;">Select a new JPG, PNG or WEBP image to replace the current system file.</small>
+                </div>
             </div>
 
             <div style="margin-bottom: 20px;">
