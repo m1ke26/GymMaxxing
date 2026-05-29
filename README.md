@@ -37,8 +37,8 @@
 
 ## Credentials
 
-- adminzeus/1234 (admin)
-- apollo/1234 (trainer)
-- joao/1234 (member - citizen tier)
-- maria/1234 (member - olympian tier)
-- pedro/1234 (member - zeus tier)
+- admin@gymmaxxing.com/1234 (admin)
+- apollo@gymmaxxing.com/1234 (trainer)
+- joao@gmail.com/1234 (member - citizen tier)
+- maria@gmail.com/1234 (member - olympian tier)
+- pedro@gmail.com/1234 (member - zeus tier)
