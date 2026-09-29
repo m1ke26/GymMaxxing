@@ -7,6 +7,7 @@
 ![Project Grade](https://img.shields.io/badge/Project_Grade-16%2F20-3a3a3a?style=for-the-badge&labelColor=111111)
 ![Course](https://img.shields.io/badge/Course-LTW-3a3a3a?style=for-the-badge&labelColor=111111)
 ![Year](https://img.shields.io/badge/Year-2025%2F26-3a3a3a?style=for-the-badge&labelColor=111111)
+![Languages](https://img.shields.io/badge/Languages-PHP%20%C2%B7%20JavaScript%20%C2%B7%20HTML%20%C2%B7%20CSS-3a3a3a?style=for-the-badge&labelColor=111111)
 
 ## Project Description
 
