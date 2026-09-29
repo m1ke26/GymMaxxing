@@ -12,7 +12,7 @@
 
 GymMaxxing is a web platform for managing a gym. Members browse the class schedule, enroll in classes, check equipment availability and review the classes they attended. Trainers manage their profile and class rosters, and admins manage members, trainers, classes and equipment. It also has a membership tier system (Citizen, Olympian and Zeus) with different enrollment limits.
 
-This was a team project (myself, Pedro Gouveia and Victor Gomez) for the Linguagens e Tecnologias Web (LTW) course unit, FEUP, 2025/26.
+This was a 3-person team project (myself (up202407610@edu.fe.up.pt), Pedro Gouveia (up202200045@edu.fe.up.pt) and Victor Gomez (up202406138@edu.fe.up.pt)) for the Linguagens e Tecnologias Web (LTW) course unit, FEUP, 2025/26.
 
 The full delivered README (feature checklist and test accounts) is kept intact in [`Delivered_Readme.md`](./Delivered_Readme.md).
 
@@ -20,7 +20,6 @@ The full delivered README (feature checklist and test accounts) is kept intact i
 
 ## My Contribution
 
-[Revê e ajusta — tirado dos teus commits:]
 - Homepage, header and footer, responsive for different screen widths;
 - Page mockups and the CSS structure (`base.css`, `components.css`, `specific.css`);
 - Database schema, models and documentation;
